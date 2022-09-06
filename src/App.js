@@ -1,21 +1,20 @@
 import Home from 'pages/home';
-import Search from 'pages/search';
 import MovieDetail from 'pages/MovieDetail/MovieDetail';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import Search from 'pages/search';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-const queryClient = new QueryClient();
+
+import { NowPlaying } from "./pages/NowPlaying/NowPlaying";
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/movie/:movie_id" element={<MovieDetail />} />
+          <Route path="/movies/now_playing" element={<NowPlaying />} />
         </Routes>
       </BrowserRouter>
-    </QueryClientProvider>
   );
 }
 
