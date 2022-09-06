@@ -3,13 +3,17 @@ import Header from 'components/Header';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 
+import NowPlaying from './components/NowPlaying';
+
 const Home = () => {
   return (
     <Container>
       <Header />
 
       <Main>
-        <MainContainer></MainContainer>
+        <MainContainer>
+          <NowPlaying />
+        </MainContainer>
       </Main>
 
       <Footer />
@@ -30,6 +34,7 @@ const Main = styled.main`
 const MainContainer = styled.div`
   margin-top: 62px;
   padding: 24px 0;
+  border: 1px solid red;
 `;
 
 export default Home;
