@@ -12,7 +12,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     body {
-    line-height: 1;
+      line-height: 1;
     }
 
     ol,
@@ -26,11 +26,11 @@ const GlobalStyles = createGlobalStyle`
     a {
       text-decoration: none;
       color: inherit;
-    }
-
-    a:active,
-    a:hover {
-      outline: 0;
+      
+      &:active,
+      &:hover {
+        outline: 0;
+      }
     }
 
     input,
