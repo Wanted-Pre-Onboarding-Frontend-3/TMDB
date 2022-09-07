@@ -332,6 +332,36 @@
 
 - 개선해야 할 점
 
+<br>
+
+## 캐싱과 react-query
+- 본 프로젝트에서는 react-query를 이용해 API 요청 결과를 캐싱합니다.
+- useQuery 혹은 useInfiniteQuery 훅을 사용할 때, `staleTime`과 `cacheTime`을 설정합니다.
+	- **staleTime**: The time in milliseconds after data is considered stale. This value only applies to the hook it is defined on.
+If set to Infinity, the data will never be considered stale
+	- **cacheTime**: The time in milliseconds that unused/inactive cache data remains in memory. When a query's cache becomes unused or inactive, that cache data will be garbage collected after this duration. When different cache times are specified, the longest one will be used.
+If set to Infinity, will disable garbage collection
+
+- 사용예시: `pages > MovieDetail > MovieDetail.jsx`
+```js
+  const {
+    isLoading,
+    error,
+    data: movieData,
+  } = useQuery(
+    ['movie-detail'],
+    () => {
+      return movieAPI.getMovieById({
+        movie_id: id,
+        params: { language: 'ko-KR' },
+      });
+    },
+    { suspense: true, cacheTime: 1000, staleTime: 1000 },
+  );
+```
+staleTime과 cacheTime을 1000ms로 설정해서 영화 상세정보를 1초간 캐싱하고 있습니다.
+
+
 <br><br>
 
 # 컨벤션 링크
