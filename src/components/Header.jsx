@@ -10,24 +10,23 @@ import { fonts } from 'styles/fonts';
 const Header = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResult, setSearchResult] = useState([]);
+  const [isShow, setIsShow] = useState(false);
+
+  useEffect(() => {
+    if (!searchKeyword) setIsShow(false);
+  }, [searchKeyword]);
 
   const serachData = useQuery(
-    ['search-movie'],
+    ['search-movie', searchKeyword],
     () => searchAPI.searchAndGetMovies({ params: { query: searchKeyword } }),
     {
-      refetchOnWindowFocus: false,
-      retry: 0,
       onSuccess: (data) => setSearchResult(data.results),
     },
   );
 
   const handleKeyword = (e) => {
+    setIsShow(true);
     setSearchKeyword(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(searchResult);
   };
 
   return (
@@ -56,7 +55,7 @@ const Header = () => {
         </Menu>
 
         <SearchMenu>
-          <SearchContainer onSubmit={handleSubmit}>
+          <SearchContainer>
             <SearchWrapper>
               <BiSearch color="white" />
               <SearchInput
@@ -66,7 +65,7 @@ const Header = () => {
             </SearchWrapper>
           </SearchContainer>
 
-          <SearchResultWrapper>
+          <SearchResultWrapper isShow={isShow}>
             <SearchResult isShow>
               {searchResult?.map((item) => (
                 <Link key={item.id} to={`/movie/${item.id}`}>
@@ -122,6 +121,7 @@ const Menu = styled.span`
   align-items: center;
   justify-content: space-evenly;
   height: 70px;
+
   a {
     border-radius: 4px;
     padding: 0 1em;
@@ -155,7 +155,7 @@ const SearchContainer = styled.form`
 `;
 
 const SearchResultWrapper = styled.div`
-  /* display: ${(props) => (props.isShow ? 'block' : 'none')}; */
+  display: ${(props) => (props.isShow ? 'block' : 'none')};
   width: 100%;
   max-height: 480px;
   position: absolute;
@@ -163,8 +163,8 @@ const SearchResultWrapper = styled.div`
   left: 0;
   padding: 0.6em;
   background: ${colors.white};
-  border-radius: 5px;
   box-shadow: 0 2px 5px 0 ${colors.black};
+  border-radius: 5px;
   overflow-y: scroll;
   z-index: 100;
 `;
@@ -181,8 +181,10 @@ const SearchResultItem = styled.li`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
   &:hover {
-    background-color: ${colors.white};
+    background-color: ${colors.main_gray};
+    color: ${colors.white};
   }
 `;
 
