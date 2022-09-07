@@ -35,7 +35,7 @@ function TopRated() {
     if (inView) {
       fetchNextPage();
     }
-  }, [inView]);
+  }, [fetchNextPage, inView]);
 
   if (isLoading) {
     return <div>test</div>;
