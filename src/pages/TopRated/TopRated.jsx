@@ -1,87 +1,89 @@
 import movieAPI from 'api/movieAPI';
-import { useEffect, useState } from 'react';
-import { AiFillStar } from 'react-icons/ai';
+import { Loading } from 'components/Loading';
+import _ from 'lodash';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery } from 'react-query';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
 
-function TopRated() {
-  const [topRatedMovies, setTopRatedMovies] = useState();
-  const IMAGE_BASEURL = 'https://image.tmdb.org/t/p/original';
+import MovieChart from './components/MovieChart';
 
-  const fetchData = async () => {
-    const getTopRated = await movieAPI.getTopRatedMovies({});
-    setTopRatedMovies(getTopRated.results);
+function TopRated() {
+  const { ref, inView } = useInView();
+
+  const fetchData = async ({ pageParam = 1 }) => {
+    const getTopRated = await movieAPI.getTopRatedMovies({
+      params: { language: 'ko-KR', page: pageParam },
+    });
     return getTopRated;
   };
 
+  const { isLoading, data, fetchNextPage } = useInfiniteQuery(
+    ['top-rated'],
+    fetchData,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        return lastPage.page + 1;
+      },
+    },
+  );
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
+
+  if (isLoading) {
+    return <div>test</div>;
+  }
+
+  const flattenMovie = _.flatten(data?.pages.map((item) => item.results));
 
   return (
-    <Wrapper>
-      <Content>
-        <Title>
-          <SubText>WantedMDb Charts</SubText>
-          <MainText>Movie Top 20</MainText>
-        </Title>
-        <MovieList>
-          <Table>
-            <TableHead>
-              <tr>
-                <th>순위</th>
-                <th>영화제목</th>
-                <th>개봉일</th>
-                <th>별점</th>
-              </tr>
-            </TableHead>
-            <TableBody>
-              {topRatedMovies?.map((data, index) => (
-                <TableRow key={data?.id}>
-                  <td>
-                    <Rank>{index + 1}</Rank>
-                  </td>
-                  <td>
-                    <article>
-                      <Image>
-                        <img
-                          src={IMAGE_BASEURL + data?.poster_path}
-                          alt="poster"
-                        />
-                      </Image>
-                      <Text>
-                        <MovieTitle>
-                          {data?.title}
-                          <span>({data?.release_date.split('-')[0]})</span>
-                        </MovieTitle>
-                        <OriginalTitle>{data?.original_title}</OriginalTitle>
-                      </Text>
-                    </article>
-                  </td>
-                  <td>
-                    <ReleaseDate>{data?.release_date}</ReleaseDate>
-                  </td>
-                  <td>
-                    <Star>
-                      <AiFillStar color={colors.main} />
-                      {data?.vote_average}
-                    </Star>
-                  </td>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </MovieList>
-      </Content>
-    </Wrapper>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Wrapper>
+          <Content>
+            <Title>
+              <SubText>WantedMDb Charts</SubText>
+              <MainText>Movie Top 20</MainText>
+            </Title>
+            <MovieList>
+              <Table>
+                <TableHead>
+                  <tr>
+                    <th>순위</th>
+                    <th>영화제목</th>
+                    <th>개봉일</th>
+                    <th>별점</th>
+                  </tr>
+                </TableHead>
+                <TableBody>
+                  <MovieChart data={flattenMovie} />
+                </TableBody>
+              </Table>
+            </MovieList>
+            <div ref={ref} style={{ height: '100px' }}>
+              {!isLoading && <Loading />}
+            </div>
+          </Content>
+        </Wrapper>
+      )}
+    </>
   );
 }
 
 const Wrapper = styled.main`
   display: flex;
   justify-content: center;
-  background-color: ${colors.black};
+  align-items: center;
+  flex-direction: column;
+  padding: 20px 0;
 `;
 const Content = styled.section`
   width: 1000px;
@@ -111,68 +113,5 @@ const TableHead = styled.thead`
   line-height: 40px;
 `;
 const TableBody = styled.tbody``;
-
-const TableRow = styled.tr`
-  border: 2px solid ${colors.white};
-  &:nth-child(odd) {
-    background-color: #f6f6f5;
-  }
-  &:nth-child(even) {
-    background-color: #fbfbfb;
-  }
-  td {
-    vertical-align: middle;
-    height: 100px;
-    line-height: 100px;
-    &:nth-child(1) {
-      width: 8%;
-    }
-    &:nth-child(2) {
-      article {
-        display: flex;
-      }
-    }
-    &:nth-child(3) {
-      width: 15%;
-    }
-    &:nth-child(4) {
-      width: 10%;
-    }
-  }
-`;
-
-const Rank = styled.div`
-  ${fonts.H3};
-`;
-
-const Image = styled.div`
-  width: 80px;
-  height: 100px;
-
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
-const Text = styled.div`
-  margin-left: 20px;
-  text-align: left;
-`;
-const MovieTitle = styled.p`
-  ${fonts.H3};
-  line-height: 70px;
-`;
-const OriginalTitle = styled.p`
-  ${fonts.Body2};
-  color: ${colors.main_gray};
-  line-height: 20px;
-`;
-
-const ReleaseDate = styled.p``;
-
-const Star = styled.div``;
 
 export default TopRated;

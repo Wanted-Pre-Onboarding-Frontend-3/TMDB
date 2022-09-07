@@ -1,5 +1,5 @@
 import Layout from 'components/Layout';
-import Home from 'pages/Home/Home';
+import Home from 'pages/Home/index';
 import MovieDetail from 'pages/MovieDetail/MovieDetail';
 import NowPlaying from 'pages/NowPlaying/NowPlaying';
 import Search from 'pages/search';
