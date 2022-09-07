@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import { colors } from 'styles/colors';
 
 const GlobalStyles = createGlobalStyle`
   ${reset}
@@ -13,6 +14,7 @@ const GlobalStyles = createGlobalStyle`
 
     body {
       line-height: 1;
+      background-color: ${colors.black};
     }
 
     ol,
