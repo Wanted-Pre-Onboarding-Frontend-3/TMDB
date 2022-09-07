@@ -40,7 +40,7 @@ const NowPlaying = () => {
     if (inView) {
       fetchNextPage();
     }
-  }, [inView]);
+  }, [fetchNextPage, inView]);
 
   const flattenMovie = data.pages.map((item) => item.results).flat();
 
