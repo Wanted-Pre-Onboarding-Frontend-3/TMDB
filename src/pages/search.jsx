@@ -22,6 +22,7 @@ export default function Search() {
         params: { query, page: pageParam },
       }),
     {
+      suspense: true,
       enabled: !!query,
       getNextPageParam: (lastPage) => lastPage.page + 1,
     },

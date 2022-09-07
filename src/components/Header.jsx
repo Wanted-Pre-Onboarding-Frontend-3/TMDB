@@ -22,6 +22,7 @@ const Header = () => {
     ['search-movie', searchKeyword],
     () => searchAPI.searchAndGetMovies({ params: { query: searchKeyword } }),
     {
+      suspense: true,
       onSuccess: (data) => setSearchResult(data.results),
     },
   );

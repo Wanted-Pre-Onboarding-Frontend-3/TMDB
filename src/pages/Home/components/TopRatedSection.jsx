@@ -20,6 +20,7 @@ const TopRatedSection = ({ sliderTitle, path }) => {
   };
 
   const { isLoading } = useQuery('upcoming', fetchTopRatedData, {
+    suspense: true,
     onSuccess: (data) => {
       setTopRatedData(data.results);
     },

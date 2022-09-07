@@ -25,6 +25,7 @@ export default function Upcoming() {
     ['upcoming'],
     fetchDatas,
     {
+      suspense: true,
       getNextPageParam: (lastPage, pages) => {
         return lastPage.page + 1;
       },
