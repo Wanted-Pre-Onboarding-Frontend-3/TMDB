@@ -366,4 +366,4 @@ staleTime과 cacheTime을 1000ms로 설정해서 영화 상세정보를 1초간 
 
 # 컨벤션 링크
 
-[참고](https://instinctive-moustache-aba.notion.site/WPO-FE-6-1-Coding-Convention-6a0123a0196343ea88c8434a3c157812#d00f53fad5c545a4b1e2aba7f6c62f31)
+[링크](https://sunhwaday.notion.site/c0ff2ba4723c42a289ab9021e8aa95ba)
