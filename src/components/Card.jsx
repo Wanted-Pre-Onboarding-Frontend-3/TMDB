@@ -51,6 +51,10 @@ const MovieImgWrapper = styled.div`
   transform: scale(1);
   transition: 0.3s ease-out;
   border-radius: 5px;
+
+  &:first-of-type {
+    margin-left: 1.5em;
+  }
 `;
 
 const MovieImg = styled.img`
@@ -67,9 +71,9 @@ const MovieImg = styled.img`
 `;
 
 const MovieInfo = styled.div`
+  margin-left: 1.5em;
   visibility: ${(props) => (props.isShow ? 'visible' : 'hidden')};
   width: 200px;
-  /* height: 100%; */
   position: absolute;
   bottom: 0;
   display: flex;
