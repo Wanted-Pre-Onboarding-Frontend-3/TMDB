@@ -7,7 +7,6 @@ export const axiosInstance = axios.create({
   baseURL: BASE_URL,
   params: {
     api_key: API_KEY,
-    language: 'ko',
   },
   paramsSerializer: function (params) {
     return new URLSearchParams(params).toString();
