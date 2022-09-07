@@ -1,5 +1,5 @@
 import searchAPI from 'api/searchAPI';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { useQuery } from 'react-query';
 import { Link, useNavigate } from 'react-router-dom';
@@ -22,6 +22,7 @@ const Header = () => {
     ['search-movie', searchKeyword],
     () => searchAPI.searchAndGetMovies({ params: { query: searchKeyword } }),
     {
+      enabled: !!searchKeyword,
       suspense: true,
       onSuccess: (data) => setSearchResult(data.results),
     },

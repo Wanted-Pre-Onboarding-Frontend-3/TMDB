@@ -12,10 +12,12 @@ const MainTrailer = ({ idx }) => {
 
   const { data: videoData } = useQuery(
     ['get-video', id],
-    () => {
-      return movieAPI.getTrailerMovies({ movieId: id });
+
+    () => movieAPI.getTrailerMovies({ movieId: id }),
+    {
+      suspense: true,
+      enabled: !!id,
     },
-    { suspense: true },
   );
 
   useEffect(() => {
