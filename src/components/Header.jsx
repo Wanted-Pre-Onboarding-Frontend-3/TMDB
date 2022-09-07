@@ -1,5 +1,5 @@
 import searchAPI from 'api/searchAPI';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
@@ -9,26 +9,25 @@ import { fonts } from 'styles/fonts';
 
 const Header = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
 
-  const fetchSearchData = async () => {
-    const getSearchData = await searchAPI.searchAndGetMovies({
-      query: searchKeyword,
-      language: 'ko-KR',
-    });
-    return getSearchData;
-  };
-
-  // const movieSearch = (query) => {
-  //   return useQuery(['search-movie', query], () => fetchSearchData(query));
-  // };
+  const serachData = useQuery(
+    ['search-movie'],
+    () => searchAPI.searchAndGetMovies({ params: { query: searchKeyword } }),
+    {
+      refetchOnWindowFocus: false,
+      retry: 0,
+      onSuccess: (data) => setSearchResult(data.results),
+    },
+  );
 
   const handleKeyword = (e) => {
     setSearchKeyword(e.target.value);
   };
 
-  const handleSearch = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // movieSearch(searchKeyword);
+    console.log(searchResult);
   };
 
   return (
@@ -57,7 +56,7 @@ const Header = () => {
         </Menu>
 
         <SearchMenu>
-          <SearchContainer onSubmit={handleSearch}>
+          <SearchContainer onSubmit={handleSubmit}>
             <SearchWrapper>
               <BiSearch color="white" />
               <SearchInput
@@ -68,7 +67,13 @@ const Header = () => {
           </SearchContainer>
 
           <SearchResultWrapper>
-            <SearchResultList>{/* 검색결과 */}</SearchResultList>
+            <SearchResult isShow>
+              {searchResult?.map((item) => (
+                <Link key={item.id} to={`/movie/${item.id}`}>
+                  <SearchResultItem>{item.title}</SearchResultItem>
+                </Link>
+              ))}
+            </SearchResult>
           </SearchResultWrapper>
         </SearchMenu>
       </Navigation>
@@ -150,24 +155,26 @@ const SearchContainer = styled.form`
 `;
 
 const SearchResultWrapper = styled.div`
+  /* display: ${(props) => (props.isShow ? 'block' : 'none')}; */
   width: 100%;
   max-height: 480px;
   position: absolute;
   top: 70px;
   left: 0;
+  padding: 0.6em;
   background: ${colors.white};
   border-radius: 5px;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px 0 ${colors.black};
   overflow-y: scroll;
   z-index: 100;
 `;
 
-const SearchResultList = styled.ul``;
+const SearchResult = styled.ul``;
 
-const SearchResultListItem = styled.li`
+const SearchResultItem = styled.li`
   width: 100%;
   height: 24px;
-  padding: 4px 6px;
+  padding: 1em 0;
   color: ${colors.sub_gray};
   display: flex;
   align-items: center;
