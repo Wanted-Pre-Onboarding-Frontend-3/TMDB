@@ -35,7 +35,7 @@
  
 | 이름   | 역할  |
 | ------ | ------ |
-| 김리후 | 팀원 / home page, Gnb |
+| 김리후 | 팀원 / 메인페이지, Header, Footer |
 | 김지현 | 팀원 / upcoming page | 
 | 이경준 | 팀원 / 검색 페이지 |
 | 이혜성 | **팀장** / 공통영역, S3 + github actions 정적 사이트 CD |
@@ -184,6 +184,7 @@
     - **검색기능** : react-query 사용한 api 호출, 키워드가 입력됨에 따라 관련된 영화 리스트가 뜨도록 구현하였고, 해당 목록을 클릭하거나 submit시 검색 결과 페이지로 이동된다.
 
   <br>
+  
   - **Main** : 
     - **react-query와 함께 사용한 suspense가 data를 fetch하며 에러 발생** : mount 시점과 관련된 사항으로 판단, api 호출 값을 useEfect 안에 넣어 해결하였다.
     - **React-player를 이용한 메인 트레일러** : react-query로 popular movie 리스트를 불러와 랜덤한 id값의 비디오 영상이 재생되도록 구현하였다.
@@ -191,6 +192,7 @@
     - **Top-rated 섹션**은 리스트형식으로 디자인 하였으며, hover 애니메이션 효과 및 클릭시 해당 영화로 연결되게 하였다.
 
   <br>
+  
   - **Footer** : Footer 디자인 구현.
 
   <br>
