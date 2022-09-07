@@ -22,24 +22,16 @@ export default function Upcoming() {
   }, []);
 
   return (
-    <Body>
-      <Container>
-        <PageTitle>Up Next</PageTitle>
-        <CardList>
-          {upcomingMovies?.map((movie) => {
-            return <CardItem key={movie.id} movie={movie} />;
-          })}
-        </CardList>
-      </Container>
-    </Body>
+    <Container>
+      <PageTitle>Up Next</PageTitle>
+      <CardList>
+        {upcomingMovies?.map((movie) => {
+          return <CardItem key={movie.id} movie={movie} />;
+        })}
+      </CardList>
+    </Container>
   );
 }
-
-const Body = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #000000;
-`;
 
 const Container = styled.div`
   width: 100%;
