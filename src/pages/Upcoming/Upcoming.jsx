@@ -1,34 +1,55 @@
 import movieAPI from 'api/movieAPI';
-import { useEffect, useState } from 'react';
+import { Loading } from 'components/Loading';
+import _ from 'lodash';
+import { useEffect } from 'react';
+import { useInfiniteQuery } from 'react-query';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
+import { useInView } from 'utils/useInView';
 
 import CardItem from './components/CardItem';
 
 export default function Upcoming() {
-  const [upcomingMovies, setUpcomingMovies] = useState();
+  const { ref, inView } = useInView();
 
-  const fetchDatas = async () => {
-    const getNowPlaying = await movieAPI.getUpcomingMovies({
-      params: { language: 'ko' },
+  const fetchDatas = async ({ pageParam = 1 }) => {
+    const UpcomingMoviePage = await movieAPI.getUpcomingMovies({
+      params: { language: 'ko', page: pageParam },
     });
-    setUpcomingMovies(getNowPlaying.results);
-    return getNowPlaying;
+
+    return UpcomingMoviePage;
   };
 
+  const { isLoading, data, fetchNextPage } = useInfiniteQuery(
+    ['projects'],
+    fetchDatas,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        return lastPage.page + 1;
+      },
+    },
+  );
+
   useEffect(() => {
-    fetchDatas();
-  }, []);
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
+
+  const flattenMovie = _.flatten(data?.pages.map((item) => item.results));
 
   return (
     <Container>
       <PageTitle>Up Next</PageTitle>
       <CardList>
-        {upcomingMovies?.map((movie) => {
+        {flattenMovie?.map((movie) => {
           return <CardItem key={movie.id} movie={movie} />;
         })}
       </CardList>
+      <div ref={ref} style={{ height: '100px' }}>
+        {!isLoading && <Loading />}
+      </div>
     </Container>
   );
 }
