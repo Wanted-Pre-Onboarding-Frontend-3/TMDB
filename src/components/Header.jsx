@@ -73,7 +73,10 @@ const Header = () => {
             </SearchWrapper>
           </SearchContainer>
 
-          <SearchResultWrapper isShow={isShow}>
+          <SearchResultWrapper
+            isShow={isShow}
+            onMouseLeave={() => setIsShow(false)}
+          >
             <SearchResult isShow>
               {searchResult?.results?.map((item) => (
                 <Link key={item.id} to={`/movie/${item.id}`}>
