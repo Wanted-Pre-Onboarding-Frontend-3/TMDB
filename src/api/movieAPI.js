@@ -9,6 +9,10 @@ const movieAPI = {
     const { data } = await axiosInstance.get('/movie/now_playing', { params });
     return data;
   },
+  getTrailerMovies: async ({ movieId,params }) => {
+    const { data } = await axiosInstance.get(`/movie/${movieId}/videos`, { params });
+    return data;
+  },
   getUpcomingMovies: async ({ params }) => {
     const { data } = await axiosInstance.get('/movie/upcoming', { params });
     return data;
