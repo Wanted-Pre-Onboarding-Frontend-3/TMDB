@@ -65,7 +65,8 @@
           },
           "newlines-between": "always"
         }
-      ]
+      ],
+      "react-hooks/exhaustive-deps": "off"
     }
   },
   "browserslist": {
