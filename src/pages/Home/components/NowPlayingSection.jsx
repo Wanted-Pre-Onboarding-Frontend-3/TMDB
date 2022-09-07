@@ -2,7 +2,7 @@ import movieAPI from 'api/movieAPI';
 import Card from 'components/Card';
 import Slider from 'components/Slider';
 import { useState, useEffect } from 'react';
-import { useQuery, prefetchQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
