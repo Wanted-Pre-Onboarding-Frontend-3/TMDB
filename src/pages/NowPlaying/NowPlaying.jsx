@@ -1,32 +1,36 @@
-import _ from 'lodash';
-import { useEffect, useState } from 'react';
+import movieAPI from 'api/movieAPI';
+import { Loading } from 'components/Loading';
+import { useEffect } from 'react';
+import { AiFillStar } from "react-icons/ai";
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { colors } from "styles/colors";
+import { fonts } from "styles/fonts";
+import { makeImagePath } from 'utils/PathUtil';
 
-import movieAPI from '../../api/movieAPI';
-import { Loading } from '../../components/Loading';
-import { makeImagePath } from '../../utils/PathUtil';
 import TopMainVideo from './component/TopMainVideo';
 
-export const NowPlaying = () => {
-  const { ref, inView } = useInView();
-  const [firstMovieId, setFirstMovieId] = useState();
 
-  const fetchUsers = async ({ pageParam = 1 }) => {
-    const getNowPlaying = await movieAPI.getNowPlayingMovies({
-      page: pageParam,
+const NowPlaying = () => {
+  const {ref, inView} = useInView();
+  const fetchUsers = async ({pageParam = 1}) => {
+    return await movieAPI.getNowPlayingMovies({
+      params: {
+        page: pageParam,
+      }
     });
-    setFirstMovieId(getNowPlaying.results[0].id);
-    return getNowPlaying;
   };
 
-  const { isLoading, data, fetchNextPage } = useInfiniteQuery(
-    ['projects'],
+  const {isLoading, data, fetchNextPage} = useInfiniteQuery(
+    ['get-movie'],
     fetchUsers,
     {
-      getNextPageParam: (lastPage, pages) => {
+      suspense:true,
+      cacheTime: 1000,
+      staleTime: 1000,
+      getNextPageParam: (lastPage) => {
         return lastPage.page + 1;
       },
     },
@@ -38,166 +42,125 @@ export const NowPlaying = () => {
     }
   }, [inView]);
 
-  if (isLoading) {
-    return <div>test</div>;
-  }
-
-  const flattenMovie = _.flatten(data.pages.map((item) => item.results));
+  const flattenMovie = data.pages.map((item) => item.results).flat();
 
   return (
-    <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <RootWrap>
-          <TopMainVideo id={firstMovieId} />
-          <TopInfoContainer>
-            <TopInfoWrap>
-              <SpaceWrap></SpaceWrap>
-              <PosterWrap>포스터</PosterWrap>
-              <TitleWrap>영화제목</TitleWrap>
-              <ReleaseDateWrap>개봉일</ReleaseDateWrap>
-              <RateWrap>평점</RateWrap>
-            </TopInfoWrap>
-          </TopInfoContainer>
-          <NowPlayingListWrap>
-            {flattenMovie?.map((nowPlaying, index) => {
-              return (
-                <DivWrap key={index}>
-                  <IndexWrap>{index + 1}</IndexWrap>
-                  <LinkWrap to={`/`}>
-                    <ImageWrap bgimg={makeImagePath(nowPlaying.poster_path)} />
-                  </LinkWrap>
-                  <DetailBox>
-                    <TitleBox>{nowPlaying.title}</TitleBox>
-                    <Date>{nowPlaying.release_date}</Date>
-                    <AverageWrap>⭐{nowPlaying.vote_average}</AverageWrap>
-                  </DetailBox>
-                </DivWrap>
-              );
-            })}
-          </NowPlayingListWrap>
-          <div ref={ref} style={{ height: '100px' }}>
-            {!isLoading && <Loading />}
-          </div>
-        </RootWrap>
-      )}
-    </>
+    <Body>
+      <TopMainVideo id={flattenMovie[0].id}/>
+      <PageTitle>Now Playing</PageTitle>
+
+      <CardList>
+        {flattenMovie?.map((nowPlaying) => {
+          return (
+            <CardItemContainer key={nowPlaying.id}>
+              <LinkWrap to={`/movie/${nowPlaying.id}`}>
+                <PosterBox>
+                  <PosterImg
+                    src={makeImagePath(nowPlaying.poster_path)}
+                    alt="포스터 이미지"
+                  />
+                </PosterBox>
+              </LinkWrap>
+
+              <InfoBox>
+                <span>개봉일 : {nowPlaying.release_date}</span>
+                <TitleWrapper>
+                  <h3>{nowPlaying.title}</h3>
+                  <span>{nowPlaying.original_title}</span>
+                </TitleWrapper>
+                <RankWrapper>
+                  <AiFillStar color={colors.main}/>
+                  <span>{nowPlaying.vote_average}</span>
+                  <span>({nowPlaying.vote_count})</span>
+                </RankWrapper>
+                <Overview>{nowPlaying.overview}</Overview>
+              </InfoBox>
+            </CardItemContainer>
+          );
+        })}
+      </CardList>
+      <div ref={ref} style={{height: '100px'}}>
+        {!isLoading && <Loading/>}
+      </div>
+    </Body>
   );
 };
 
-const RootWrap = styled.div`
-  margin: 0 auto;
-`;
-const TopInfoContainer = styled.div`
-  max-width: 1200px;
-  margin: 24px auto;
-  padding: 0 20px;
-`;
-const TopInfoWrap = styled.div`
-  padding: 0 12px;
-  display: flex;
+const LinkWrap = styled(Link)``;
+
+const Body = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  padding: 40px 60px;
+  ${fonts.Body1}
+  color: ${colors.gray6};
 `;
 
-const TitleWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-basis: 55%;
-`;
-const PosterWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 100px;
-  max-width: 100px;
-`;
-const SpaceWrap = styled.div`
-  margin: 20px;
-`;
-const ReleaseDateWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-basis: 35%;
-`;
-const RateWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-basis: 10%;
-`;
-const NowPlayingListWrap = styled.div`
-  max-width: 1200px;
-  margin: 24px auto;
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  border: 1px solid gainsboro;
+
+const PageTitle = styled.h1`
+  margin-bottom: 20px;
+  margin-left: 10px;
+  ${fonts.H1}
+  color: ${colors.main};
 `;
 
-const DivWrap = styled.div`
+const CardList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const CardItemContainer = styled.li`
   display: flex;
   align-items: center;
-  padding: 12px;
+  width: 100%;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: ${colors.gray1};
+`;
 
-  &&:nth-child(even) {
-    background-color: gainsboro;
+const PosterBox = styled.div``;
+
+const PosterImg = styled.img`
+  width: 132px;
+  height: 185px;
+  object-fit: cover;
+`;
+
+const InfoBox = styled.div`
+  padding-left: 20px;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  h3 {
+    ${fonts.H3}
+  }
+
+  span {
+    ${fonts.H3}
+    color: ${colors.gray3};
   }
 `;
 
-const LinkWrap = styled(Link)`
+const RankWrapper = styled.div`
+  margin-top: 20px;
+  display: flex;
+`;
+
+const Overview = styled.p`
+  display: block !important;
   width: 100%;
-  height: 100%;
-  min-height: 150px;
-  max-width: 100px;
+  margin-top: 20px;
+  color: ${colors.gray5};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 `;
 
-const ImageWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background-image: url(${(prop) => prop.bgimg});
-  background-position: center;
-  background-size: cover;
-  border-radius: 10px;
-  min-height: 150px;
-  max-width: 100px;
-`;
-
-const DetailBox = styled.div`
-  display: flex;
-  flex: 1;
-`;
-
-const TitleBox = styled.div`
-  display: flex;
-  flex: 1;
-  flex-basis: 55%;
-  align-items: center;
-  justify-content: center;
-  word-break: keep-all;
-  padding: 0 16px;
-`;
-
-const Date = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-basis: 35%;
-  word-break: keep-all;
-  padding: 0 16px;
-`;
-
-const AverageWrap = styled.div`
-  display: flex;
-  flex-basis: 10%;
-  align-items: center;
-  justify-content: flex-end;
-`;
-
-const IndexWrap = styled.div`
-  padding: 20px;
-`;
+export default NowPlaying;
