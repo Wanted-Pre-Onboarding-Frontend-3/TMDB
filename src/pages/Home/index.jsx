@@ -3,16 +3,20 @@ import Header from 'components/Header';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 
-import NowPlaying from './components/NowPlaying';
+import MovieSliderSection from './components/MovieSliderSection';
 
 const Home = () => {
+  // TODO: 하단에 흰 영역 처리
+  // TODO: main 사진?
+
   return (
     <Container>
       <Header />
 
       <Main>
         <MainContainer>
-          <NowPlaying />
+          <MovieSliderSection sliderTitle="Now Playing" path='now_playing' />
+          <MovieSliderSection sliderTitle="Upcoming" path='upcoming'/>
         </MainContainer>
       </Main>
 
@@ -34,7 +38,6 @@ const Main = styled.main`
 const MainContainer = styled.div`
   margin-top: 62px;
   padding: 24px 0;
-  border: 1px solid red;
 `;
 
 export default Home;
