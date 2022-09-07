@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
 
+import AgeTag from './AgeTag';
 import GenresTags from './GenresTags';
 
 const IMAGE_BASEURL = 'https://image.tmdb.org/t/p/original';
@@ -36,7 +37,7 @@ const MovieDetailHeader = (props) => {
           {title} ({release_date && release_date.slice(0, 4)})
         </h1>
         <div className="releaseAndAdult">
-          <span>{adult ? '19' : 'All'}</span>
+          {adult ? <AgeTag age={'19'} /> : <AgeTag age={'All'} />}
           <span> · {release_date && release_date.replaceAll('-', '.')}</span>
         </div>
         <div className="genres">
@@ -46,7 +47,7 @@ const MovieDetailHeader = (props) => {
             })}
         </div>
         <div className="vote">
-          <span>⭐{vote_average}</span>
+          <span>⭐{vote_average && vote_average.toFixed(1)}</span>
           <span> ({vote_count}명의 평가)</span>
         </div>
         <div className="tagline">{tagline}</div>
@@ -80,6 +81,7 @@ const PosterWrapper = styled.div`
   img {
     width: 360px;
     height: 500px;
+    border-radius: 0.2rem;
   }
 `;
 
@@ -90,12 +92,13 @@ const MovieInfoWrapper = styled.div`
 
   h1 {
     ${fonts.H1}
+    font-size: 2.2rem;
     color: ${colors.white};
     margin-bottom: 1rem;
   }
 
   .releaseAndAdult {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
 
   .genres {
