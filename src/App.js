@@ -1,4 +1,7 @@
-import Home from 'pages/home';
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+import Layout from 'components/Layout';
+import Home from 'pages/Home';
 import Search from 'pages/search';
 import MovieDetail from 'pages/MovieDetail/MovieDetail';
 import { QueryClient, QueryClientProvider } from 'react-query';
