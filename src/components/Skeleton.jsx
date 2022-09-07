@@ -1,5 +1,10 @@
 import styled, { css, keyframes } from 'styled-components';
 
+/**
+ *
+ * @param { { width: number, height: number , circle: boolean, translucent: boolean } } props
+ * @returns 컴포넌트가 로딩중일때 대신 렌더링되는 placeholder 컴포넌트
+ */
 export const Skeleton = (props) => <StyledSkeleton {...props} />;
 
 const pulse = keyframes`
