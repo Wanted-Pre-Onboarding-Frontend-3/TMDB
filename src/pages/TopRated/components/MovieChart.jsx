@@ -98,7 +98,6 @@ const Rank = styled.div`
 const Image = styled.div`
   width: 80px;
   height: 100px;
-
   img {
     display: block;
     width: 100%;
