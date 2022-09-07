@@ -14,7 +14,7 @@
 
 # 배포 링크
 
-- 링크
+- [링크](http://tmdb-team-3.s3-website.ap-northeast-2.amazonaws.com/)
 
 <br><br>
 
@@ -101,8 +101,70 @@
 
 <summary>프로젝트 구조</summary>
 
-<div  markdown="1">
-</div>
+```
+📦src
+ ┣ 📂api
+ ┃ ┣ 📜axios-instance.js
+ ┃ ┣ 📜movieAPI.js
+ ┃ ┗ 📜searchAPI.js
+ ┣ 📂assets
+ ┃ ┗ 📂images
+ ┃ ┃ ┗ 📜default_poster.png
+ ┣ 📂components
+ ┃ ┣ 📂Search
+ ┃ ┃ ┗ 📜common.js
+ ┃ ┣ 📜Card.jsx
+ ┃ ┣ 📜Footer.jsx
+ ┃ ┣ 📜Header.jsx
+ ┃ ┣ 📜Layout.jsx
+ ┃ ┣ 📜Loading.jsx
+ ┃ ┣ 📜ScrollTop.jsx
+ ┃ ┣ 📜Skeleton.jsx
+ ┃ ┣ 📜Slider.jsx
+ ┃ ┗ 📜Spinner.jsx
+ ┣ 📂hooks
+ ┃ ┗ 📜.gitkeep
+ ┣ 📂pages
+ ┃ ┣ 📂Home
+ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┣ 📜MainTrailer.jsx
+ ┃ ┃ ┃ ┣ 📜NowPlayingSection.jsx
+ ┃ ┃ ┃ ┣ 📜TopRatedItem.jsx
+ ┃ ┃ ┃ ┣ 📜TopRatedSection.jsx
+ ┃ ┃ ┃ ┗ 📜UpcomingSection.jsx
+ ┃ ┃ ┗ 📜Home.jsx
+ ┃ ┣ 📂MovieDetail
+ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┣ 📜AgeTag.jsx
+ ┃ ┃ ┃ ┣ 📜GenresTags.jsx
+ ┃ ┃ ┃ ┣ 📜MovieDetailBody.jsx
+ ┃ ┃ ┃ ┗ 📜MovieDetailHeader.jsx
+ ┃ ┃ ┗ 📜MovieDetail.jsx
+ ┃ ┣ 📂NowPlaying
+ ┃ ┃ ┣ 📂component
+ ┃ ┃ ┃ ┗ 📜TopMainVideo.jsx
+ ┃ ┃ ┗ 📜NowPlaying.jsx
+ ┃ ┣ 📂TopRated
+ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┗ 📜MovieChart.jsx
+ ┃ ┃ ┗ 📜TopRated.jsx
+ ┃ ┣ 📂Upcoming
+ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┗ 📜CardItem.jsx
+ ┃ ┃ ┗ 📜Upcoming.jsx
+ ┃ ┗ 📜search.jsx
+ ┣ 📂styles
+ ┃ ┣ 📜colors.js
+ ┃ ┣ 📜fonts.js
+ ┃ ┗ 📜globalStyles.js
+ ┣ 📂utils
+ ┃ ┣ 📜css.util.js
+ ┃ ┣ 📜HomeUtil.js
+ ┃ ┣ 📜PathUtil.js
+ ┃ ┗ 📜useInView.js
+ ┣ 📜App.js
+ ┗ 📜index.js
+```
 
 </details>
 
@@ -170,8 +232,27 @@
 ## 0. 공통기능
 
 - 구현한 점
+	- **Spinner** :
+		- suspense시 fallback 엘리먼트로 Spinner 사용
+		- React.Suspense과 react-query의 useQuery 훅 suspense 옵션을 함께 사용
+
+	- **Skeleton** :
+		- API fetch가 완료되기 전에 표시할 placeholder UI
+		- 구현만하고 사용하진 못했음.
+		- Spinner에 비해 UX는 좋겠지만 코드양이 꽤 늘어나고 지저분해지는 느낌이다.
+
+	- **ScrollTop** :
+		- `react-intersection-observer` 사용
+		- 임의의 target div 엘리먼트를 추가해서 사용
+	
+	- **API 세팅** :
+		- axios 인스턴스 설정
+			- 모든 요청에 API_KEY가 필요하므로 params에 API_KEY 설정
+			- paramsSerializer 설정
+		
 
 - 개선해야 할 점
+	- **Skeleton** UI는 `react-loading-skeleton` 등 라이브러리 사용 고려
 
 <br>
 
