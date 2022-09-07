@@ -20,7 +20,7 @@ const TopRatedItem = ({ id, title, year, vote, movieUrl }) => {
 
       <div>
         <AiFillStar />
-        <span>{vote}</span>
+        <span>{vote.toFixed(1)}</span>
       </div>
     </Item>
   );
@@ -40,6 +40,13 @@ const Item = styled.li`
     color: ${colors.main};
     margin-right: 0.4em;
   }
+
+  &:hover {
+    background-color: ${colors.main_gray};
+    color: ${colors.sub_gray};
+    transform: scale(1.02);
+    transition: 0.2s ease-out;
+  }
 `;
 
 const Number = styled.span`
@@ -51,10 +58,6 @@ const Number = styled.span`
 const Title = styled.span`
   margin-left: 1em;
   font-weight: bold;
-
-  &::before {
-    content: '| ';
-  }
 `;
 
 const Year = styled.span`

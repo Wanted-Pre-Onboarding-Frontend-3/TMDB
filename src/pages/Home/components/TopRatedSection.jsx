@@ -25,7 +25,6 @@ const TopRatedSection = ({ sliderTitle, path }) => {
     },
   });
 
-
   const ListSection = (
     <TopRatedWrapper>
       {topRatedData?.map((movie, index) => (
@@ -84,9 +83,7 @@ const TopRatedWrapper = styled.ul`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 49%);
-  /* grid-template-rows: repeat(4, 38px); */
-  /* border: 1px solid red; */
-  grid-gap: 10px;
+  gap: 10px 28px;
 `;
 
 export default TopRatedSection;
