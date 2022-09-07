@@ -17,7 +17,6 @@ export default function Upcoming() {
     const UpcomingMoviePage = await movieAPI.getUpcomingMovies({
       params: { language: 'ko', page: pageParam },
     });
-
     return UpcomingMoviePage;
   };
 
@@ -36,22 +35,33 @@ export default function Upcoming() {
     if (inView) {
       fetchNextPage();
     }
-  }, [inView]);
+  }, [fetchNextPage, inView]);
 
-  const flattenMovie = _.flatten(data?.pages.map((item) => item.results));
+  if (isLoading) {
+    return <div>test</div>;
+  }
+
+  const flattenMovie = _.flatten(data?.pages?.map((item) => item.results));
 
   return (
-    <Container>
-      <PageTitle>Up Next</PageTitle>
-      <CardList>
-        {flattenMovie?.map((movie) => {
-          return <CardItem key={movie.id} movie={movie} />;
-        })}
-      </CardList>
-      <div ref={ref} style={{ height: '100px' }}>
-        {!isLoading && <Loading />}
-      </div>
-    </Container>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Container>
+          <PageTitle>Up Next</PageTitle>
+          <CardList>
+            {flattenMovie &&
+              flattenMovie?.map((movie) => {
+                return <CardItem key={movie.id} movie={movie} />;
+              })}
+          </CardList>
+          <div ref={ref} style={{ height: '100px' }}>
+            {!isLoading && <Loading />}
+          </div>
+        </Container>
+      )}
+    </>
   );
 }
 
