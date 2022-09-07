@@ -1,5 +1,5 @@
 import Home from 'pages/home';
-import Search from 'pages/Search';
+import Search from 'pages/search';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const queryClient = new QueryClient();

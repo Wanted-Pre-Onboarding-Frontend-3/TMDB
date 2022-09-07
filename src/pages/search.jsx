@@ -1,43 +1,10 @@
-import axios from 'axios';
-import { Flex, Heading1, Image, Section, Text } from 'components/Search/Common';
-import React, { useEffect, useRef, useState } from 'react';
+import searchAPI from 'api/searchAPI';
+import { Flex, Heading1, Image, Section, Text } from 'components/Search/common';
+import React, { useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
-
-const http = {
-  get: async (url_, params_) => {
-    const url = generateUrl(url_, params_);
-    return axios.get(url).catch((reason) => {
-      console.warn(reason, url, params_);
-    });
-  },
-};
-
-const API_KEY = 'e62c2a4b5119e6c093e36405d98e67e4';
-const BASE_URL = 'https://api.themoviedb.org/3';
-const IMAGE_URL = 'https://image.tmdb.org/t/p/w400';
-
-const generateUrl = (url_, params_) => {
-  const url = new URL(url_);
-  const param = new URLSearchParams(params_);
-
-  return `${url}?${param}`;
-};
-
-const api = {
-  search: async (query, pageParam) => {
-    return await http.get(`${BASE_URL}/search/movie`, {
-      query,
-      language: 'ko-KR',
-      page: pageParam,
-      api_key: API_KEY,
-    });
-  },
-  image: (path) => {
-    return `${IMAGE_URL}${path}`;
-  },
-};
+import { useInView } from 'utils/useInView';
 
 export default function Search() {
   const [searchParams] = useSearchParams();
@@ -46,15 +13,19 @@ export default function Search() {
 
   const { data, fetchNextPage } = useInfiniteQuery(
     ['search'],
-    async ({ pageParam = 1 }) => {
-      const res = await api.search(query, pageParam);
-      return res.data;
-    },
+    async ({ pageParam = 1 }) =>
+      await searchAPI.searchAndGetMovies({
+        params: { query, page: pageParam },
+      }),
     {
       enabled: !!query,
       getNextPageParam: (lastPage) => lastPage.page + 1,
     },
   );
+
+  const handleImageError = (e) => {
+    e.target.src = require('assets/images/default_poster.png');
+  };
 
   useEffect(() => {
     if (inView) {
@@ -78,7 +49,8 @@ export default function Search() {
                 return (
                   <ResultRow gap={16} key={result.id}>
                     <PosterImageWrapper
-                      src={api.image(result.poster_path)}
+                      src={`${process.env.REACT_APP_IMAGE_URL}/w400${result.poster_path}`}
+                      onError={handleImageError}
                     ></PosterImageWrapper>
                     <TitleWrapper>
                       {result.title} (
@@ -97,30 +69,9 @@ export default function Search() {
   );
 }
 
-const useInView = () => {
-  const [inView, setInView] = useState();
-  const ref = useRef();
-
-  useEffect(() => {
-    if (ref.current == null) return;
-    const intersectino_observer_callback = ([entry], observer) => {
-      setInView(entry.isIntersecting);
-    };
-    const observer = new IntersectionObserver(intersectino_observer_callback, {
-      threshold: [0, 1],
-    });
-    observer.observe(ref.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  return { ref, inView };
-};
-
 const PosterImageWrapper = styled(Image)`
   width: 48px;
+  object-fit: cover;
   border-radius: 8px;
   aspect-ratio: 9 / 16;
 `;
@@ -154,4 +105,5 @@ const ResultWrapper = styled.ul`
 const ResultRow = styled(Flex)`
   width: 100%;
   align-items: center;
+  padding: 8px 24px;
 `;
