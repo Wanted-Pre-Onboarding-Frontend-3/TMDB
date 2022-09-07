@@ -20,13 +20,13 @@ const MovieDetail = () => {
     return getMovieData;
   };
 
-  const { isLoading, data } = useQuery("movie-detail", fetchMovieData, {
+  const { isLoading, data } = useQuery('movie-detail', fetchMovieData, {
     refetchOnWindowFocus: false,
     retry: 0,
-    onSuccess: data => {
-      console.log(data)
+    onSuccess: (data) => {
+      console.log(data);
       setMovieData(data);
-    }
+    },
   });
 
   if (isLoading) {

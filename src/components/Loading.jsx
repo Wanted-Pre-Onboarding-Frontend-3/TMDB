@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 export const Loading = (props) => {
   return (
@@ -55,4 +55,3 @@ export const DotWrap = styled.div`
     animation-delay: 0.1s;
   }
 `;
-
