@@ -9,7 +9,7 @@ import MovieDetailHeader from './components/MovieDetailHeader';
 
 const MovieDetail = () => {
   const id = useParams().movie_id;
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -19,13 +19,16 @@ const MovieDetail = () => {
     isLoading,
     error,
     data: movieData,
-  } = useQuery(['movie-detail'], () => {
-    return movieAPI.getMovieById({
-      movie_id: id,
-      params: { language: 'ko-KR' },
-    });
-  }, {suspense: true, cacheTime: 1000,
-    staleTime: 1000});
+  } = useQuery(
+    ['movie-detail'],
+    () => {
+      return movieAPI.getMovieById({
+        movie_id: id,
+        params: { language: 'ko-KR' },
+      });
+    },
+    { suspense: true, cacheTime: 1000, staleTime: 1000 },
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;
