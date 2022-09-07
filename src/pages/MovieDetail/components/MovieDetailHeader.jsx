@@ -1,4 +1,5 @@
 import React from 'react';
+import { AiFillStar } from 'react-icons/ai';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
@@ -16,8 +17,7 @@ const MovieDetailHeader = (props) => {
     genres,
     vote_average,
     vote_count,
-    tagline,
-    ...others
+    tagline
   } = props.movieData;
 
   const handleImageError = (e) => {
@@ -35,6 +35,7 @@ const MovieDetailHeader = (props) => {
         <img
           src={`${process.env.REACT_APP_IMAGE_URL}${poster_path}`}
           onError={handleImageError}
+          alt={title}
         />
       </PosterWrapper>
       <MovieInfoWrapper>
@@ -42,18 +43,19 @@ const MovieDetailHeader = (props) => {
           {title} ({release_date && release_date.slice(0, 4)})
         </h1>
         <ReleaseAndAge>
-          {adult ? <AgeTag age={'19'} /> : <AgeTag age={'All'} />}
+          {adult && <AgeTag age={'19'} />}
           <span>{release_date && release_date.replaceAll('-', '.')}</span>
         </ReleaseAndAge>
         <Genres>
-            {genres &&
-              genres.map((item) => {
-                return <GenresTags key={item.id} name={item.name} />;
-              })}
+          {genres &&
+            genres.map((item) => {
+              return <GenresTags key={item.id} name={item.name} />;
+            })}
         </Genres>
         <Vote>
-          <span>⭐{vote_average && vote_average.toFixed(1)}</span>
-          <span> ({vote_count}명의 평가)</span>
+          <AiFillStar color={colors.main} />
+          <span>{vote_average && vote_average.toFixed(1)}</span>
+          <span>({vote_count}명의 평가)</span>
         </Vote>
         <Tagline>{tagline}</Tagline>
       </MovieInfoWrapper>
@@ -70,7 +72,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
-}
+  }
 `;
 
 const BgOpacityBlack = styled.div`
@@ -118,6 +120,12 @@ const Genres = styled.div`
 const Vote = styled.div`
   ${fonts.H3}
   margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+
+  span {
+    padding-left: 0.4rem;
+  }
 `;
 
 const Tagline = styled.div`

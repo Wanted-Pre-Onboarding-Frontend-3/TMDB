@@ -8,37 +8,38 @@ import { fonts } from 'styles/fonts';
 
 import { makeTrailerPath } from '../../../utils/PathUtil';
 
-const MovieDetailEtc = (props) => {
-  const { overview, video } = props.movieData;
+const MovieDetailBody = (props) => {
+  const { overview } = props.movieData;
 
   const { data: videoData } = useQuery(['get-video'], () => {
-    return movieAPI.getTrailerMovies({ movieId: props.pathname });
+    return movieAPI.getTrailerMovies({ movieId: props.id });
   });
 
   return (
     <Container>
-      <div>
-        <h1>Overview</h1>
-        <p>{overview}</p>
-      </div>
-      {!video && (
+      {overview && (
         <div>
-          <h1>Video</h1>
-          <ReactPlayer
-            url={makeTrailerPath(videoData?.results[1].key)}
-            width="960px"
-            height="540px"
-            playing={true}
-            muted={true}
-            controls={true}
-          />
+          <h1>Overview</h1>
+          <p>{overview}</p>
         </div>
       )}
+      <div>
+        <h1>Video</h1>
+        <ReactPlayer
+          url={makeTrailerPath(videoData?.results[0].key)}
+          width="80vw"
+          height="80vh"
+          playing={true}
+          muted={true}
+          loop={true}
+          controls={true}
+        />
+      </div>
     </Container>
   );
 };
 
-export default MovieDetailEtc;
+export default MovieDetailBody;
 
 const Container = styled.div`
   padding-left: 1rem;
@@ -59,5 +60,5 @@ const Container = styled.div`
   @media screen and (max-width: 768px) {
     width: 80vw;
     word-break: break-all;
-}
+  }
 `;
