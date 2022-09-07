@@ -10,9 +10,13 @@ import { makeTrailerPath } from 'utils/PathUtil';
 const MainTrailer = ({ idx }) => {
   const [id, setId] = useState('');
 
-  const { data: videoData } = useQuery(['get-video', id], () => {
-    return movieAPI.getTrailerMovies({ movieId: id });
-  });
+  const { data: videoData } = useQuery(
+    ['get-video', id],
+    () => movieAPI.getTrailerMovies({ movieId: id }),
+    {
+      enabled: !!id,
+    },
+  );
 
   useEffect(() => {
     const fetchUsers = async () => {
