@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
@@ -9,10 +9,17 @@ const Header = () => {
   // TODO: 메뉴 링크 경로 확인, 검색기능 구현
 
   const [searchKeyword, setSearchKeyword] = useState('');
+  const navigate = useNavigate();
   const pathName = window.location.pathname;
 
   const handleKeyword = (e) => {
     setSearchKeyword(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!searchKeyword) return;
+    navigate(`/search?q=${searchKeyword}`);
   };
 
   return (
@@ -41,7 +48,7 @@ const Header = () => {
         </Menu>
 
         <SearchMenu>
-          <SearchContainer>
+          <SearchContainer onSubmit={handleSubmit}>
             <SearchLabel>
               <BiSearch color="white" />
               <SearchInput

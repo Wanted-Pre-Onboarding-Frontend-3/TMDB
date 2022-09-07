@@ -1,10 +1,14 @@
 import searchAPI from 'api/searchAPI';
-import { Flex, Heading1, Image, Section, Text } from 'components/Search/common';
+import { Heading1, Section, Text } from 'components/Search/common';
 import React, { useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { colors } from 'styles/colors';
+import { fonts } from 'styles/fonts';
 import { useInView } from 'utils/useInView';
+
+import CardItem from './Upcoming/components/CardItem';
 
 export default function Search() {
   const [searchParams] = useSearchParams();
@@ -46,19 +50,7 @@ export default function Search() {
           return (
             <React.Fragment key={page.nextId}>
               {page?.results?.map((result) => {
-                return (
-                  <ResultRow gap={16} key={result.id}>
-                    <PosterImageWrapper
-                      src={`${process.env.REACT_APP_IMAGE_URL}/w400${result.poster_path}`}
-                      onError={handleImageError}
-                    ></PosterImageWrapper>
-                    <TitleWrapper>
-                      {result.title} (
-                      {new Date(result.release_date).getFullYear()})
-                    </TitleWrapper>
-                    <Text>{result.vote_average}</Text>
-                  </ResultRow>
-                );
+                return <CardItem key={result.id} movie={result}></CardItem>;
               })}
             </React.Fragment>
           );
@@ -69,30 +61,19 @@ export default function Search() {
   );
 }
 
-const PosterImageWrapper = styled(Image)`
-  width: 48px;
-  object-fit: cover;
-  border-radius: 8px;
-  aspect-ratio: 9 / 16;
-`;
-
 const SectionWrapper = styled(Section)`
   justify-content: flex-start;
   align-items: flex-start;
   padding: 12px;
-  border: 1px solid grey;
   margin: 12px;
   border-radius: 8px;
   width: 100%;
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-`;
-
-const TitleWrapper = styled(Text)`
-  flex: 1;
-  font-size: 20;
-  font-weight: bold;
+  & h1 {
+    color: white;
+  }
 `;
 
 const ResultWrapper = styled.ul`
@@ -100,10 +81,6 @@ const ResultWrapper = styled.ul`
   flex-direction: column;
   gap: 12px;
   width: 100%;
-`;
-
-const ResultRow = styled(Flex)`
-  width: 100%;
-  align-items: center;
-  padding: 8px 24px;
+  ${fonts.Body1}
+  color: ${colors.gray6};
 `;
