@@ -2,17 +2,16 @@ import { AiOutlineToTop } from 'react-icons/ai';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 
-export default function ScrollTop({ inView }) {
+export default function ScrollTop({ isScrolledDown }) {
   const handleScrollTop = () => {
     window.scrollTo({
-      top: 100,
-      left: 100,
-      behavior: 'smooth',
+      top: 0,
+      left: 0,
     });
   };
 
   return (
-    <ScrollTopButton inView={inView} onClick={handleScrollTop}>
+    <ScrollTopButton isScrolledDown={isScrolledDown} onClick={handleScrollTop}>
       <AiOutlineToTop />
     </ScrollTopButton>
   );
@@ -32,10 +31,10 @@ const ScrollTopButton = styled.button`
   border-radius: 50%;
   color: ${colors.white};
   background-color: ${colors.sub_gray};
-  opacity: ${({ inView }) => (inView ? 0.5 : 0)};
+  opacity: ${({ isScrolledDown }) => (isScrolledDown ? 0.5 : 0)};
   transition: all 0.3s;
 
   &:hover {
-    opacity: ${({ inView }) => (inView ? 1 : 0)};
+    opacity: ${({ isScrolledDown }) => (isScrolledDown ? 1 : 0)};
   }
 `;
