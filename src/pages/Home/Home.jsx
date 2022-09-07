@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 import MainSlider from './components/MainSlider';
-import MovieSliderSection from './components/MovieSliderSection';
+import NowPlayingSection from './components/NowPlayingSection';
 import TopRatedSection from './components/TopRatedSection';
+import UpcomingSection from './components/UpcomingSection';
 
 const Home = () => {
-  // TODO: 하단에 흰 영역 처리
-  // TODO: main 사진?
+  // TODO: main 트레일러
 
   return (
     <Container>
@@ -14,9 +14,9 @@ const Home = () => {
         <MainSlider />
 
         <MainContainer>
-          <MovieSliderSection sliderTitle="Now Playing" path="now_playing" />
-          <MovieSliderSection sliderTitle="Upcoming" path="upcoming" />
-          <TopRatedSection path="top_rated" />
+          <NowPlayingSection sliderTitle={'Now Playing'} path={'now-playing'} />
+          <UpcomingSection sliderTitle={'Upcoming'} path={'upcoming'} />
+          <TopRatedSection  sliderTitle={'Top-rated'} path={'top-rated'}/>
         </MainContainer>
       </Main>
     </Container>

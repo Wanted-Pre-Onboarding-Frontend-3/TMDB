@@ -1,44 +1,43 @@
 import movieAPI from 'api/movieAPI';
+import Card from 'components/Card';
+import Slider from 'components/Slider';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
-import { getYear } from 'utils/HomeUtil';
+import { PREFIX, getYear } from 'utils/HomeUtil';
 
-import TopRatedItem from './TopRatedItem';
+const UpcomingSection = ({ sliderTitle, path }) => {
+  const [upcomingData, setUpcomingData] = useState([]);
 
-const TopRatedSection = ({ sliderTitle, path }) => {
-  const [topRatedData, setTopRatedData] = useState([]);
-
-  const fetchTopRatedData = async () => {
-    const getTopRatedData = await movieAPI.getTopRatedMovies({
+  const fetchUpcomingData = async () => {
+    const getUpcomingData = await movieAPI.getUpcomingMovies({
       language: 'ko-KR',
     });
-    return getTopRatedData;
+    return getUpcomingData;
   };
 
-  const { isLoading } = useQuery('upcoming', fetchTopRatedData, {
+  const { isLoading } = useQuery('upcoming', fetchUpcomingData, {
     onSuccess: (data) => {
-      setTopRatedData(data.results);
+      setUpcomingData(data.results);
     },
   });
 
-
-  const ListSection = (
-    <TopRatedWrapper>
-      {topRatedData?.map((movie, index) => (
-        <TopRatedItem
+  const upcomingSlider = (
+    <Slider>
+      {upcomingData?.map((movie) => (
+        <Card
           key={movie.id}
-          id={index}
           title={movie.title}
+          posterSrc={`${PREFIX}/${movie.poster_path}`}
           movieUrl={`/movie/${movie.id}`}
           year={getYear(movie.release_date)}
           vote={movie.vote_average}
-        ></TopRatedItem>
+        ></Card>
       ))}
-    </TopRatedWrapper>
+    </Slider>
   );
 
   return (
@@ -48,9 +47,7 @@ const TopRatedSection = ({ sliderTitle, path }) => {
         <StyledLink to={path}>더보기</StyledLink>
       </TitleWrapper>
 
-      <TopRatedContainer>
-        {isLoading ? <div>Loading...</div> : ListSection}
-      </TopRatedContainer>
+      {isLoading ? <div>Loading...</div> : upcomingSlider}
     </Container>
   );
 };
@@ -76,17 +73,4 @@ const StyledLink = styled(Link)`
   line-height: 40px;
 `;
 
-const TopRatedContainer = styled.section`
-  display: flex;
-`;
-
-const TopRatedWrapper = styled.ul`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 49%);
-  /* grid-template-rows: repeat(4, 38px); */
-  /* border: 1px solid red; */
-  grid-gap: 10px;
-`;
-
-export default TopRatedSection;
+export default UpcomingSection;

@@ -1,18 +1,34 @@
+import searchAPI from 'api/searchAPI';
 import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
 
 const Header = () => {
-  // TODO: 메뉴 링크 경로 확인, 검색기능 구현
-
   const [searchKeyword, setSearchKeyword] = useState('');
-  const pathName = window.location.pathname;
+
+  const fetchSearchData = async () => {
+    const getSearchData = await searchAPI.searchAndGetMovies({
+      query: searchKeyword,
+      language: 'ko-KR',
+    });
+    return getSearchData;
+  };
+
+  // const movieSearch = (query) => {
+  //   return useQuery(['search-movie', query], () => fetchSearchData(query));
+  // };
 
   const handleKeyword = (e) => {
     setSearchKeyword(e.target.value);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // movieSearch(searchKeyword);
   };
 
   return (
@@ -27,7 +43,7 @@ const Header = () => {
         </LogoWrapper>
 
         <Menu>
-          <Link to="/now_playing">
+          <Link to="/now-playing">
             <MenuButton>Now Playing</MenuButton>
           </Link>
 
@@ -41,14 +57,14 @@ const Header = () => {
         </Menu>
 
         <SearchMenu>
-          <SearchContainer>
-            <SearchLabel>
+          <SearchContainer onSubmit={handleSearch}>
+            <SearchWrapper>
               <BiSearch color="white" />
               <SearchInput
                 placeholder="검색어를 입력해주세요."
                 onChange={handleKeyword}
               />
-            </SearchLabel>
+            </SearchWrapper>
           </SearchContainer>
 
           <SearchResultWrapper>
@@ -101,7 +117,6 @@ const Menu = styled.span`
   align-items: center;
   justify-content: space-evenly;
   height: 70px;
-
   a {
     border-radius: 4px;
     padding: 0 1em;
@@ -164,14 +179,13 @@ const SearchResultListItem = styled.li`
   }
 `;
 
-const SearchLabel = styled.label`
+const SearchWrapper = styled.label`
   width: 100%;
   height: 38px;
   display: flex;
   align-items: center;
   border-radius: 4px;
   position: relative;
-
   svg {
     position: absolute;
     left: 8px;
