@@ -27,7 +27,7 @@ const Header = () => {
         </LogoWrapper>
 
         <Menu>
-          <Link to="/now_playing">
+          <Link to="/now-playing">
             <MenuButton>Now Playing</MenuButton>
           </Link>
 
