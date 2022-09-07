@@ -24,6 +24,7 @@ function TopRated() {
     ['top-rated'],
     fetchData,
     {
+      suspense: true,
       getNextPageParam: (lastPage, pages) => {
         return lastPage.page + 1;
       },

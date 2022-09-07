@@ -20,6 +20,7 @@ const NowPlayingSection = ({ sliderTitle, path }) => {
   };
 
   const { isLoading } = useQuery('now-playing', fetchNowPlayingData, {
+    suspense: true,
     onSuccess: (data) => {
       setNowPlayingData(data.results);
     },

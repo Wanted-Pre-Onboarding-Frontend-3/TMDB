@@ -20,6 +20,7 @@ const UpcomingSection = ({ sliderTitle, path }) => {
   };
 
   const { isLoading } = useQuery('upcoming', fetchUpcomingData, {
+    suspense: true,
     onSuccess: (data) => {
       setUpcomingData(data.results);
     },
