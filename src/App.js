@@ -14,13 +14,15 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Routes element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/now-playing" element={<NowPlaying />} />
-          <Route path="/movie/:movie_id" element={<MovieDetail />} />
-          <Route path="/upcoming" element={<Upcoming />} />
-          <Route path="/top-rated" element={<TopRated />} />
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/now-playing" element={<NowPlaying />} />
+            <Route path="/movie/:movie_id" element={<MovieDetail />} />
+            <Route path="/upcoming" element={<Upcoming />} />
+            <Route path="/top-rated" element={<TopRated />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
