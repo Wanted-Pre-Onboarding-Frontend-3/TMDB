@@ -1,22 +1,19 @@
-import Home from 'pages/home';
-import Footer from 'components/Footer';
-import Header from 'components/Header';
 import Layout from 'components/Layout';
-import Home from 'pages/Home';
-import Search from 'pages/search';
+import Home from 'pages/home';
 import MovieDetail from 'pages/MovieDetail/MovieDetail';
-import Upcoming from 'pages/Upcoming/Upcoming';
+import Search from 'pages/search';
 import TopRated from 'pages/TopRated/TopRated';
+import Upcoming from 'pages/Upcoming/Upcoming';
 import { QueryClient, QueryClientProvider } from 'react-query';
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Routes>
+        <Routes element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/movie/:movie_id" element={<MovieDetail />} />
@@ -25,7 +22,6 @@ function App() {
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
->
   );
 }
 
