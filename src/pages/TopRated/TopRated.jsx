@@ -88,6 +88,9 @@ const Wrapper = styled.main`
 const Content = styled.section`
   width: 1000px;
   background-color: ${colors.white};
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Title = styled.div`
