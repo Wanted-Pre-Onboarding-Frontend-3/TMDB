@@ -1,8 +1,8 @@
 import searchAPI from 'api/searchAPI';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
@@ -11,6 +11,8 @@ const Header = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [isShow, setIsShow] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!searchKeyword) setIsShow(false);
@@ -27,6 +29,13 @@ const Header = () => {
   const handleKeyword = (e) => {
     setIsShow(true);
     setSearchKeyword(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsShow(false);
+    setSearchKeyword('');
+    navigate(`/search?q=${searchKeyword} `);
   };
 
   return (
@@ -55,7 +64,7 @@ const Header = () => {
         </Menu>
 
         <SearchMenu>
-          <SearchContainer>
+          <SearchContainer onSubmit={handleSubmit}>
             <SearchWrapper>
               <BiSearch color="white" />
               <SearchInput
