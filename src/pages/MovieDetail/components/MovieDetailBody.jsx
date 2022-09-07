@@ -30,7 +30,7 @@ const MovieDetailBody = (props) => {
       <div>
         <h1>Video</h1>
         <ReactPlayer
-          url={makeTrailerPath(videoData?.results[0].key)}
+          url={makeTrailerPath(videoData?.results[0]?.key)}
           width="80vw"
           height="80vh"
           playing={true}
