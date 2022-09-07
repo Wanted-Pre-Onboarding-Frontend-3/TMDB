@@ -1,7 +1,7 @@
 import movieAPI from 'api/movieAPI';
 import Card from 'components/Card';
 import Slider from 'components/Slider';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -19,12 +19,13 @@ const UpcomingSection = ({ sliderTitle, path }) => {
     return getUpcomingData;
   };
 
-  const { isLoading } = useQuery('upcoming', fetchUpcomingData, {
+  const { isLoading, data } = useQuery('upcoming', fetchUpcomingData, {
     suspense: true,
-    onSuccess: (data) => {
-      setUpcomingData(data.results);
-    },
   });
+
+  useEffect(() => {
+    setUpcomingData(data.results);
+  }, [data.results]);
 
   const upcomingSlider = (
     <Slider>

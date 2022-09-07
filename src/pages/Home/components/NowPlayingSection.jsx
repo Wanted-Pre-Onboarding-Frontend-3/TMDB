@@ -1,8 +1,8 @@
 import movieAPI from 'api/movieAPI';
 import Card from 'components/Card';
 import Slider from 'components/Slider';
-import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useState, useEffect } from 'react';
+import { useQuery, prefetchQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
@@ -19,12 +19,13 @@ const NowPlayingSection = ({ sliderTitle, path }) => {
     return getNowPlayingData;
   };
 
-  const { isLoading } = useQuery('now-playing', fetchNowPlayingData, {
+  const { isLoading, data } = useQuery('now-playing', fetchNowPlayingData, {
     suspense: true,
-    onSuccess: (data) => {
-      setNowPlayingData(data.results);
-    },
   });
+
+  useEffect(() => {
+    setNowPlayingData(data.results);
+  }, [data.results]);
 
   const nowPlayingSlider = (
     <Slider>
