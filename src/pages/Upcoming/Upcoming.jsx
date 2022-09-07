@@ -2,11 +2,11 @@ import movieAPI from 'api/movieAPI';
 import { Loading } from 'components/Loading';
 import _ from 'lodash';
 import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
-import { useInView } from 'utils/useInView';
 
 import CardItem from './components/CardItem';
 
@@ -22,7 +22,7 @@ export default function Upcoming() {
   };
 
   const { isLoading, data, fetchNextPage } = useInfiniteQuery(
-    ['projects'],
+    ['upcoming'],
     fetchDatas,
     {
       getNextPageParam: (lastPage, pages) => {
