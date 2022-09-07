@@ -17,7 +17,7 @@ const MovieDetailHeader = (props) => {
     genres,
     vote_average,
     vote_count,
-    tagline
+    tagline,
   } = props.movieData;
 
   const handleImageError = (e) => {

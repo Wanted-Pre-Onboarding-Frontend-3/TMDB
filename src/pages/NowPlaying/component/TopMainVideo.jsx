@@ -9,9 +9,13 @@ import { makeTrailerPath } from '../../../utils/PathUtil';
 const TopMainVideo = (props) => {
   const { id } = props;
 
-  const { data: videoData } = useQuery(['get-video'], () => {
-    return movieAPI.getTrailerMovies({ movieId: id });
-  });
+  const { data: videoData } = useQuery(
+    ['get-video'],
+    () => {
+      return movieAPI.getTrailerMovies({ movieId: id });
+    },
+    { suspense: true },
+  );
 
   return (
     <RootWrap>

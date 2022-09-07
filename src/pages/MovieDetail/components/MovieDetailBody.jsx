@@ -11,9 +11,13 @@ import { makeTrailerPath } from '../../../utils/PathUtil';
 const MovieDetailBody = (props) => {
   const { overview } = props.movieData;
 
-  const { data: videoData } = useQuery(['get-video'], () => {
-    return movieAPI.getTrailerMovies({ movieId: props.id });
-  });
+  const { data: videoData } = useQuery(
+    ['get-video'],
+    () => {
+      return movieAPI.getTrailerMovies({ movieId: props.id });
+    },
+    { suspense: true },
+  );
 
   return (
     <Container>
