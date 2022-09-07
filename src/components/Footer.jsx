@@ -1,12 +1,11 @@
-import { forwardRef } from 'react';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 
-const Footer = forwardRef((props, ref) => {
+const Footer = () => {
   // TODO: 아이콘 넣기
 
   return (
-    <Container ref={ref}>
+    <Container>
       <Wrapper>
         <Top>
           <TermAndPolicyItem>
@@ -29,7 +28,7 @@ const Footer = forwardRef((props, ref) => {
       </Wrapper>
     </Container>
   );
-});
+};
 
 const Container = styled.footer`
   display: flex;
