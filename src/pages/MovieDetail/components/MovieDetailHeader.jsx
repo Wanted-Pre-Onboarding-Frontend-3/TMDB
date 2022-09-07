@@ -1,4 +1,5 @@
 import React from 'react';
+import { AiFillStar } from 'react-icons/ai';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
@@ -6,7 +7,6 @@ import { fonts } from 'styles/fonts';
 import AgeTag from './AgeTag';
 import GenresTags from './GenresTags';
 
-const IMAGE_BASEURL = 'https://image.tmdb.org/t/p/original';
 const MovieDetailHeader = (props) => {
   const {
     title,
@@ -17,40 +17,47 @@ const MovieDetailHeader = (props) => {
     genres,
     vote_average,
     vote_count,
-    tagline,
-    ...others
+    tagline
   } = props.movieData;
-  const posterPath = IMAGE_BASEURL + poster_path;
-  const backdropPath = IMAGE_BASEURL + backdrop_path;
+
+  const handleImageError = (e) => {
+    e.target.src = require('assets/images/default_poster.png');
+  };
+
   return (
     <Container
       style={{
-        backgroundImage: `url(${backdropPath})`,
+        backgroundImage: `url(${process.env.REACT_APP_IMAGE_URL}${backdrop_path}`,
       }}
     >
       <BgOpacityBlack />
       <PosterWrapper>
-        <img src={posterPath} />
+        <img
+          src={`${process.env.REACT_APP_IMAGE_URL}${poster_path}`}
+          onError={handleImageError}
+          alt={title}
+        />
       </PosterWrapper>
       <MovieInfoWrapper>
         <h1>
           {title} ({release_date && release_date.slice(0, 4)})
         </h1>
-        <div className="releaseAndAdult">
-          {adult ? <AgeTag age={'19'} /> : <AgeTag age={'All'} />}
-          <span> · {release_date && release_date.replaceAll('-', '.')}</span>
-        </div>
-        <div className="genres">
+        <ReleaseAndAge>
+          {adult && <AgeTag age={'19'} />}
+          <span>{release_date && release_date.replaceAll('-', '.')}</span>
+        </ReleaseAndAge>
+        <Genres>
           {genres &&
             genres.map((item) => {
               return <GenresTags key={item.id} name={item.name} />;
             })}
-        </div>
-        <div className="vote">
-          <span>⭐{vote_average && vote_average.toFixed(1)}</span>
-          <span> ({vote_count}명의 평가)</span>
-        </div>
-        <div className="tagline">{tagline}</div>
+        </Genres>
+        <Vote>
+          <AiFillStar color={colors.main} />
+          <span>{vote_average && vote_average.toFixed(1)}</span>
+          <span>({vote_count}명의 평가)</span>
+        </Vote>
+        <Tagline>{tagline}</Tagline>
       </MovieInfoWrapper>
     </Container>
   );
@@ -61,7 +68,11 @@ export default MovieDetailHeader;
 const Container = styled.div`
   position: relative;
   display: flex;
-  padding: 0 120px;
+  word-break: break-all;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const BgOpacityBlack = styled.div`
@@ -75,18 +86,18 @@ const BgOpacityBlack = styled.div`
 `;
 
 const PosterWrapper = styled.div`
-  z-index: 5;
+  z-index: 3;
   padding: 2rem;
 
   img {
-    width: 360px;
-    height: 500px;
+    width: 300px;
+    height: 440px;
     border-radius: 0.2rem;
   }
 `;
 
 const MovieInfoWrapper = styled.div`
-  z-index: 6;
+  z-index: 3;
   padding: 2rem;
   color: ${colors.white};
 
@@ -96,23 +107,29 @@ const MovieInfoWrapper = styled.div`
     color: ${colors.white};
     margin-bottom: 1rem;
   }
+`;
 
-  .releaseAndAdult {
-    margin-bottom: 3rem;
-  }
+const ReleaseAndAge = styled.div`
+  margin-bottom: 3rem;
+`;
 
-  .genres {
-    margin-bottom: 2rem;
-  }
+const Genres = styled.div`
+  margin-bottom: 2rem;
+`;
 
-  .vote {
-    ${fonts.H3}
-    margin-bottom: 3rem;
-  }
+const Vote = styled.div`
+  ${fonts.H3}
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
 
-  .tagline {
-    ${fonts.Body1}
-    font-style: italic;
-    opacity: 0.8;
+  span {
+    padding-left: 0.4rem;
   }
+`;
+
+const Tagline = styled.div`
+  ${fonts.H3}
+  font-style: italic;
+  opacity: 0.8;
 `;
