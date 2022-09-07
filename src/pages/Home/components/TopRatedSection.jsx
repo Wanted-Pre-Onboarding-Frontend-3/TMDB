@@ -1,5 +1,5 @@
 import movieAPI from 'api/movieAPI';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -19,12 +19,13 @@ const TopRatedSection = ({ sliderTitle, path }) => {
     return getTopRatedData;
   };
 
-  const { isLoading } = useQuery('upcoming', fetchTopRatedData, {
+  const { isLoading, data } = useQuery('upcoming', fetchTopRatedData, {
     suspense: true,
-    onSuccess: (data) => {
-      setTopRatedData(data.results);
-    },
   });
+
+  useEffect(() => {
+    setTopRatedData(data.results);
+  }, [data.results]);
 
   const ListSection = (
     <TopRatedWrapper>
