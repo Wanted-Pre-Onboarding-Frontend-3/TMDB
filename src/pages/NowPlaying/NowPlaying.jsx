@@ -17,6 +17,7 @@ const NowPlaying = () => {
   const fetchUsers = async ({ pageParam = 1 }) => {
     return await movieAPI.getNowPlayingMovies({
       params: {
+        language: 'ko-KR',
         page: pageParam,
       },
     });
