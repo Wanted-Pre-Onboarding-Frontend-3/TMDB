@@ -1,9 +1,9 @@
+import { BsFacebook } from 'react-icons/bs';
+import { RiInstagramFill } from 'react-icons/ri';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 
 const Footer = () => {
-  // TODO: 아이콘 넣기
-
   return (
     <Container>
       <Wrapper>
@@ -14,16 +14,23 @@ const Footer = () => {
         </Top>
 
         <Bottom>
-          <TermAndPolicyItem>
-            주식회사 TMBD | 대표 이혜성 | 서울특별시 원티드구 프리온보딩로 3
-          </TermAndPolicyItem>
-          <TermAndPolicyItem>
-            사업자등록번호 111-22-33333 | 통신판매업 신고번호 제
-            2022-서울서초-1111호
-          </TermAndPolicyItem>
-          <TermAndPolicyItem>
-            Copyright 2022 by TMBD, Inc, All rights reserved.
-          </TermAndPolicyItem>
+          <LeftSection>
+            <TermAndPolicyItem>
+              주식회사 TMBD | 대표 이혜성 | 서울특별시 원티드구 프리온보딩로 3
+            </TermAndPolicyItem>
+            <TermAndPolicyItem>
+              사업자등록번호 111-22-33333 | 통신판매업 신고번호 제
+              2022-서울서초-1111호
+            </TermAndPolicyItem>
+            <TermAndPolicyItem>
+              Copyright 2022 by TMBD, Inc, All rights reserved.
+            </TermAndPolicyItem>
+          </LeftSection>
+
+          <RightSection>
+            <BsFacebook color="white" size="36" />
+            <RiInstagramFill color="white" size="36" />
+          </RightSection>
         </Bottom>
       </Wrapper>
     </Container>
@@ -56,9 +63,21 @@ const TermAndPolicyItem = styled.li`
 `;
 
 const Bottom = styled.ul`
+  display: flex;
+  justify-content: space-between;
+
   li {
     color: ${colors.sub_gray};
   }
+
+  svg {
+    &:first-child {
+      margin-right: 1em;
+    }
+  }
 `;
+
+const RightSection = styled.section``;
+const LeftSection = styled.section``;
 
 export default Footer;

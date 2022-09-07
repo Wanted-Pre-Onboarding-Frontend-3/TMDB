@@ -1,25 +1,41 @@
-import { useState } from 'react';
+import searchAPI from 'api/searchAPI';
+import { useState, useEffect, useRef } from 'react';
 import { BiSearch } from 'react-icons/bi';
+import { useQuery } from 'react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
 
 const Header = () => {
-  // TODO: 메뉴 링크 경로 확인, 검색기능 구현
-
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
+  const [isShow, setIsShow] = useState(false);
+
   const navigate = useNavigate();
-  const pathName = window.location.pathname;
+
+  useEffect(() => {
+    if (!searchKeyword) setIsShow(false);
+  }, [searchKeyword]);
+
+  const serachData = useQuery(
+    ['search-movie', searchKeyword],
+    () => searchAPI.searchAndGetMovies({ params: { query: searchKeyword } }),
+    {
+      onSuccess: (data) => setSearchResult(data.results),
+    },
+  );
 
   const handleKeyword = (e) => {
+    setIsShow(true);
     setSearchKeyword(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!searchKeyword) return;
-    navigate(`/search?q=${searchKeyword}`);
+    setIsShow(false);
+    setSearchKeyword('');
+    navigate(`/search?q=${searchKeyword} `);
   };
 
   return (
@@ -49,17 +65,23 @@ const Header = () => {
 
         <SearchMenu>
           <SearchContainer onSubmit={handleSubmit}>
-            <SearchLabel>
+            <SearchWrapper>
               <BiSearch color="white" />
               <SearchInput
                 placeholder="검색어를 입력해주세요."
                 onChange={handleKeyword}
               />
-            </SearchLabel>
+            </SearchWrapper>
           </SearchContainer>
 
-          <SearchResultWrapper>
-            <SearchResultList>{/* 검색결과 */}</SearchResultList>
+          <SearchResultWrapper isShow={isShow}>
+            <SearchResult isShow>
+              {searchResult?.map((item) => (
+                <Link key={item.id} to={`/movie/${item.id}`}>
+                  <SearchResultItem>{item.title}</SearchResultItem>
+                </Link>
+              ))}
+            </SearchResult>
           </SearchResultWrapper>
         </SearchMenu>
       </Navigation>
@@ -142,43 +164,46 @@ const SearchContainer = styled.form`
 `;
 
 const SearchResultWrapper = styled.div`
+  display: ${(props) => (props.isShow ? 'block' : 'none')};
   width: 100%;
   max-height: 480px;
   position: absolute;
   top: 70px;
   left: 0;
+  padding: 0.6em;
   background: ${colors.white};
+  box-shadow: 0 2px 5px 0 ${colors.black};
   border-radius: 5px;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
   overflow-y: scroll;
   z-index: 100;
 `;
 
-const SearchResultList = styled.ul``;
+const SearchResult = styled.ul``;
 
-const SearchResultListItem = styled.li`
+const SearchResultItem = styled.li`
   width: 100%;
   height: 24px;
-  padding: 4px 6px;
+  padding: 1em 0;
   color: ${colors.sub_gray};
   display: flex;
   align-items: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
   &:hover {
-    background-color: ${colors.white};
+    background-color: ${colors.main_gray};
+    color: ${colors.white};
   }
 `;
 
-const SearchLabel = styled.label`
+const SearchWrapper = styled.label`
   width: 100%;
   height: 38px;
   display: flex;
   align-items: center;
   border-radius: 4px;
   position: relative;
-
   svg {
     position: absolute;
     left: 8px;

@@ -6,29 +6,27 @@ import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
 
 const Card = ({ movieUrl, posterSrc, title, year, vote }) => {
-  const [isHover, setIshover] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
-  const handleMouseEnter = () => {
-    setIshover(true);
-    console.log(isHover);
-  };
-  const handleMouseLeave = () => {
-    setIshover(false);
-    console.log(isHover);
+  const handleImageError = (e) => {
+    e.target.src = require('assets/images/default_poster.png');
   };
 
   return (
-    <StyledLink to={movieUrl}>
+    <StyledLink
+      to={movieUrl}
+      onMouseEnter={() => setIsShow(true)}
+      onMouseLeave={() => setIsShow(false)}
+    >
       <MovieImgWrapper>
-        <MovieImgFilter
-          onMouseEnter={handleMouseEnter}
-          // onMouseLeave={handleMouseLeave}
-        >
-          <MovieImg src={posterSrc} alt={`${title} 포스터`}></MovieImg>
-        </MovieImgFilter>
+        <MovieImg
+          src={posterSrc}
+          alt={`${title} 포스터`}
+          onError={handleImageError}
+        ></MovieImg>
       </MovieImgWrapper>
 
-      <MovieInfo isHover={isHover}>
+      <MovieInfo isShow={isShow}>
         <Title>{title}</Title>
 
         <MovieInfoDetail>
@@ -51,22 +49,11 @@ const MovieImgWrapper = styled.div`
   height: 280px;
   position: relative;
   transform: scale(1);
-  transition: 0.5s ease-out;
+  transition: 0.3s ease-out;
   border-radius: 5px;
 
-  &:hover {
-    transform: scale(1.1);
-    transition: 0.5s ease-out;
-  }
-`;
-
-const MovieImgFilter = styled.div`
-  background-color: ${colors.white};
-  border-radius: 5px;
-  z-index: 10;
-
-  &:hover {
-    opacity: 0.4;
+  &:first-of-type {
+    margin-left: 1.5em;
   }
 `;
 
@@ -75,19 +62,30 @@ const MovieImg = styled.img`
   height: 100%;
   object-fit: cover;
   border-radius: 5px;
+
+  &:hover {
+    transform: scale(1.05);
+    transition: 0.3s ease-out;
+    opacity: 0.1;
+  }
 `;
 
-const MovieInfo = styled.span`
-  visibility: ${(props) => (props.isHover ? 'visible' : 'hidden')};
+const MovieInfo = styled.div`
+  margin-left: 1.5em;
+  visibility: ${(props) => (props.isShow ? 'visible' : 'hidden')};
   width: 200px;
-  height: 100%;
   position: absolute;
-  top: 0;
+  bottom: 0;
   display: flex;
   padding: 0 0.8em 0.8em 0.8em;
   flex-direction: column;
   justify-content: flex-end;
   border-radius: 5px;
+  z-index: 100;
+
+  &:hover {
+    visibility: visible;
+  }
 `;
 
 const Title = styled.h4`
@@ -101,7 +99,13 @@ const MovieInfoDetail = styled.div`
   justify-content: space-between;
   color: ${colors.main_gray};
   font-weight: bold;
+
+  svg {
+    color: ${colors.main};
+    margin-right: 0.3em;
+  }
 `;
+
 const Year = styled.span``;
 
 const Vote = styled.span``;

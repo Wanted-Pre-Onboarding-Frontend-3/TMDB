@@ -1,43 +1,43 @@
 import movieAPI from 'api/movieAPI';
+import Card from 'components/Card';
+import Slider from 'components/Slider';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
-import { getYear } from 'utils/HomeUtil';
+import { PREFIX, getYear } from 'utils/HomeUtil';
 
-import TopRatedItem from './TopRatedItem';
+const NowPlayingSection = ({ sliderTitle, path }) => {
+  const [nowPlayingData, setNowPlayingData] = useState([]);
 
-const TopRatedSection = ({ sliderTitle, path }) => {
-  const [topRatedData, setTopRatedData] = useState([]);
-
-  const fetchTopRatedData = async () => {
-    const getTopRatedData = await movieAPI.getTopRatedMovies({
+  const fetchNowPlayingData = async () => {
+    const getNowPlayingData = await movieAPI.getNowPlayingMovies({
       language: 'ko-KR',
     });
-    return getTopRatedData;
+    return getNowPlayingData;
   };
 
-  const { isLoading } = useQuery('upcoming', fetchTopRatedData, {
+  const { isLoading } = useQuery('now-playing', fetchNowPlayingData, {
     onSuccess: (data) => {
-      setTopRatedData(data.results);
+      setNowPlayingData(data.results);
     },
   });
 
-  const ListSection = (
-    <TopRatedWrapper>
-      {topRatedData?.map((movie, index) => (
-        <TopRatedItem
+  const nowPlayingSlider = (
+    <Slider>
+      {nowPlayingData?.map((movie) => (
+        <Card
           key={movie.id}
-          id={index}
           title={movie.title}
+          posterSrc={`${PREFIX}/${movie.poster_path}`}
           movieUrl={`/movie/${movie.id}`}
           year={getYear(movie.release_date)}
           vote={movie.vote_average}
-        ></TopRatedItem>
+        ></Card>
       ))}
-    </TopRatedWrapper>
+    </Slider>
   );
 
   return (
@@ -47,9 +47,7 @@ const TopRatedSection = ({ sliderTitle, path }) => {
         <StyledLink to={path}>더보기</StyledLink>
       </TitleWrapper>
 
-      <TopRatedContainer>
-        {isLoading ? <div>Loading...</div> : ListSection}
-      </TopRatedContainer>
+      {isLoading ? <div>Loading...</div> : nowPlayingSlider}
     </Container>
   );
 };
@@ -75,15 +73,4 @@ const StyledLink = styled(Link)`
   line-height: 40px;
 `;
 
-const TopRatedContainer = styled.section`
-  display: flex;
-`;
-
-const TopRatedWrapper = styled.ul`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 49%);
-  gap: 10px 28px;
-`;
-
-export default TopRatedSection;
+export default NowPlayingSection;
