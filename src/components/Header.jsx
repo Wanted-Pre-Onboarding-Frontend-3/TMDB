@@ -75,7 +75,7 @@ const Header = () => {
 
           <SearchResultWrapper isShow={isShow}>
             <SearchResult isShow>
-              {searchResult?.map((item) => (
+              {searchResult?.results?.map((item) => (
                 <Link key={item.id} to={`/movie/${item.id}`}>
                   <SearchResultItem>{item.title}</SearchResultItem>
                 </Link>
