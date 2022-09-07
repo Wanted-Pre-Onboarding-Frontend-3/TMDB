@@ -5,6 +5,7 @@ import { fonts } from 'styles/fonts';
 
 export default function CardItem({ movie }) {
   const IMAGE_BASEURL = 'https://image.tmdb.org/t/p/original/';
+  console.log(movie);
   return (
     <CardItemContainer>
       <PosterBox>
@@ -14,7 +15,7 @@ export default function CardItem({ movie }) {
         />
       </PosterBox>
       <InfoBox>
-        <span>(개봉 예정일 : 2022-06-11)</span>
+        <span>(개봉 예정일 : {movie.release_date})</span>
         <TitleWrapper>
           <h3>{movie.title}</h3>
           <span>{movie.original_title}</span>

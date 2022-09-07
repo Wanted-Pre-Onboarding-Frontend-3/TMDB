@@ -11,7 +11,7 @@ export default function Upcoming() {
 
   const fetchDatas = async () => {
     const getNowPlaying = await movieAPI.getUpcomingMovies({
-      language: 'ko-KR',
+      params: { language: 'ko' },
     });
     setUpcomingMovies(getNowPlaying.results);
     return getNowPlaying;
