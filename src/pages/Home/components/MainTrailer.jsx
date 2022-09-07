@@ -34,7 +34,7 @@ const MainTrailer = ({ idx }) => {
       <Title>인기 상영작</Title>
 
       <ReactPlayer
-        url={makeTrailerPath(videoData?.results[1].key)}
+        url={makeTrailerPath(videoData?.results[1]?.key)}
         width="100%"
         height="100%"
         playing={true}

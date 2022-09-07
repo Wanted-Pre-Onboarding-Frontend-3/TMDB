@@ -20,7 +20,7 @@ const TopMainVideo = (props) => {
   return (
     <RootWrap>
       <ReactPlayer
-        url={makeTrailerPath(videoData?.results[1].key)}
+        url={makeTrailerPath(videoData?.results[1]?.key)}
         playing={true}
         muted={true}
         loop={true}
