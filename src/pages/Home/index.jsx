@@ -1,9 +1,8 @@
-import Footer from 'components/Footer';
-import Header from 'components/Header';
 import styled from 'styled-components';
-import { colors } from 'styles/colors';
 
+import MainSlider from './components/MainSlider';
 import MovieSliderSection from './components/MovieSliderSection';
+import TopRatedSection from './components/TopRatedSection';
 
 const Home = () => {
   // TODO: 하단에 흰 영역 처리
@@ -11,23 +10,21 @@ const Home = () => {
 
   return (
     <Container>
-      <Header />
-
       <Main>
+        <MainSlider />
+
         <MainContainer>
-          <MovieSliderSection sliderTitle="Now Playing" path='now_playing' />
-          <MovieSliderSection sliderTitle="Upcoming" path='upcoming'/>
+          <MovieSliderSection sliderTitle="Now Playing" path="now_playing" />
+          <MovieSliderSection sliderTitle="Upcoming" path="upcoming" />
+          <TopRatedSection path="top_rated" />
         </MainContainer>
       </Main>
-
-      <Footer />
     </Container>
   );
 };
 
 const Container = styled.div`
-  height: 100vh;
-  background-color: ${colors.black};
+  height: 100%;
 `;
 
 const Main = styled.main`
@@ -36,7 +33,6 @@ const Main = styled.main`
 `;
 
 const MainContainer = styled.div`
-  margin-top: 62px;
   padding: 24px 0;
 `;
 

@@ -7,11 +7,9 @@ import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
 
-const MovieSlider = ({ sliderTitle, path }) => {
-  // TODO: api 설정 로직 변경
-  // TODO: api 로직 변경 => isLoading 설정
-
+const TopRatedSection = ({ path }) => {
   const [movieData, setMovieData] = useState([]);
+  console.log(process.env.REACT_APP_API_BASE_URL);
 
   useEffect(() => {
     const fetchMovieData = async (path) => {
@@ -43,8 +41,8 @@ const MovieSlider = ({ sliderTitle, path }) => {
   return (
     <Container>
       <TitleWrapper>
-        <Title>{sliderTitle}</Title>
-        <StyledLink to={`/${path}`}>더보기</StyledLink>
+        <Title>Top-rated</Title>
+        <StyledLink to="/now_playing">더보기</StyledLink>
       </TitleWrapper>
 
       <NowPlayingWrapper>
@@ -55,9 +53,7 @@ const MovieSlider = ({ sliderTitle, path }) => {
   );
 };
 
-const Container = styled.article`
-  margin-bottom: 4em;
-`;
+const Container = styled.article``;
 
 const TitleWrapper = styled.section`
   display: flex;
@@ -79,4 +75,4 @@ const Title = styled.h2`
   margin-bottom: 0.6em;
 `;
 
-export default MovieSlider;
+export default TopRatedSection;
