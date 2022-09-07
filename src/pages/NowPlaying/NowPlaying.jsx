@@ -1,33 +1,32 @@
 import movieAPI from 'api/movieAPI';
 import { Loading } from 'components/Loading';
 import { useEffect } from 'react';
-import { AiFillStar } from "react-icons/ai";
+import { AiFillStar } from 'react-icons/ai';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { colors } from "styles/colors";
-import { fonts } from "styles/fonts";
+import { colors } from 'styles/colors';
+import { fonts } from 'styles/fonts';
 import { makeImagePath } from 'utils/PathUtil';
 
 import TopMainVideo from './component/TopMainVideo';
 
-
 const NowPlaying = () => {
-  const {ref, inView} = useInView();
-  const fetchUsers = async ({pageParam = 1}) => {
+  const { ref, inView } = useInView();
+  const fetchUsers = async ({ pageParam = 1 }) => {
     return await movieAPI.getNowPlayingMovies({
       params: {
         page: pageParam,
-      }
+      },
     });
   };
 
-  const {isLoading, data, fetchNextPage} = useInfiniteQuery(
+  const { isLoading, data, fetchNextPage } = useInfiniteQuery(
     ['get-movie'],
     fetchUsers,
     {
-      suspense:true,
+      suspense: true,
       cacheTime: 1000,
       staleTime: 1000,
       getNextPageParam: (lastPage) => {
@@ -46,7 +45,7 @@ const NowPlaying = () => {
 
   return (
     <Body>
-      <TopMainVideo id={flattenMovie[0].id}/>
+      <TopMainVideo id={flattenMovie[0].id} />
       <PageTitle>Now Playing</PageTitle>
 
       <CardList>
@@ -69,7 +68,7 @@ const NowPlaying = () => {
                   <span>{nowPlaying.original_title}</span>
                 </TitleWrapper>
                 <RankWrapper>
-                  <AiFillStar color={colors.main}/>
+                  <AiFillStar color={colors.main} />
                   <span>{nowPlaying.vote_average}</span>
                   <span>({nowPlaying.vote_count})</span>
                 </RankWrapper>
@@ -79,8 +78,8 @@ const NowPlaying = () => {
           );
         })}
       </CardList>
-      <div ref={ref} style={{height: '100px'}}>
-        {!isLoading && <Loading/>}
+      <div ref={ref} style={{ height: '100px' }}>
+        {!isLoading && <Loading />}
       </div>
     </Body>
   );
@@ -96,7 +95,6 @@ const Body = styled.div`
   ${fonts.Body1}
   color: ${colors.gray6};
 `;
-
 
 const PageTitle = styled.h1`
   margin-bottom: 20px;
