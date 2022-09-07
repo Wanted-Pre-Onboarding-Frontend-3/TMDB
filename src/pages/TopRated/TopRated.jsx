@@ -2,12 +2,11 @@ import movieAPI from 'api/movieAPI';
 import { Loading } from 'components/Loading';
 import _ from 'lodash';
 import { useEffect } from 'react';
-// import { useInView } from 'react-intersection-observer';
+import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
-import { useInView } from 'utils/useInView';
 
 import MovieChart from './components/MovieChart';
 
@@ -21,8 +20,8 @@ function TopRated() {
     return getTopRated;
   };
 
-  const { isLoading, data, fetchNextpage } = useInfiniteQuery(
-    ['projects'],
+  const { isLoading, data, fetchNextPage } = useInfiniteQuery(
+    ['top-rated'],
     fetchData,
     {
       getNextPageParam: (lastPage, pages) => {
@@ -33,7 +32,7 @@ function TopRated() {
 
   useEffect(() => {
     if (inView) {
-      fetchNextpage();
+      fetchNextPage();
     }
   }, [inView]);
 
@@ -42,8 +41,6 @@ function TopRated() {
   }
 
   const flattenMovie = _.flatten(data?.pages.map((item) => item.results));
-
-  console.log('inView', inView);
 
   return (
     <>
@@ -71,7 +68,7 @@ function TopRated() {
                 </TableBody>
               </Table>
             </MovieList>
-            <div ref={ref} style={{ height: '200px' }}>
+            <div ref={ref} style={{ height: '100px' }}>
               {!isLoading && <Loading />}
             </div>
           </Content>
@@ -87,7 +84,6 @@ const Wrapper = styled.main`
   align-items: center;
   flex-direction: column;
   padding: 20px 0;
-  background-color: ${colors.black};
 `;
 const Content = styled.section`
   width: 1000px;
