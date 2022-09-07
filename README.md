@@ -1,22 +1,137 @@
-# 패키지 설치
+# 원티드 프리온보딩 2주차 과제
 
-패키지 매니저는 yarn을 사용합니다.
+<br><br>
 
-```shell
-yarn install
+# 소개
+
+원티드 프리온보딩 프론트엔드 기업협업과제
+
+- 과제 목표 : ~~
+- 수행 기간 : ~~
+- 선발 과제 관련 링크
+
+<br><br>
+
+# 배포 링크 (혹은 각 페이지별 데모영상)
+
+- 링크
+
+<br><br>
+
+# 목차 (목차 링크로 이동 가능하도록)
+
+- 목차별 링크
+- 목차별 링크
+- 목차별 링크
+
+<br><br>
+
+# 기술 스택 (선택 이유?)
+
+- React
+- JavaScript
+- styled-components
+- recoil
+
+<br><br>
+
+# 실행방법
+
+```bash
+# with yarn
+# install
+$ yarn install
+
+# run
+$ yarn start
 ```
 
-# commit시 자동으로 pretiier write script가 실행됩니다.
+<br><br>
 
-editing중에도 지속적으로 formatting이 필요하시면 prettier extendsion을 설치해 주세요.(vscode 별도 세팅이 필요합니다.)
-prettier extendsion 설치후
-setting.json
+# 3팀 소개 및 역할
+
+| 이름   | 역할                                                                |
+| ------ | ------------------------------------------------------------------- |
+| 김리후 | 팀원 / 상품 등록 페이지. Gnb                                        |
+| 김지현 | 팀원 / 상품 주문 내역확인 페이지                                    |
+| 이경준 | 팀원 / 상품 목록조회 페이지, 초기 세팅                              |
+| 이혜성 | **팀장** / 상품목록 관리 페이지, S3 + github actions 정적 사이트 CD |
+| 문선화 | 팀원 / 상품 주문 페이지                                             |
+| 홍성준 | 팀원 / 상품 상세조회 페이지                                         |
+| 서수민 | 팀원 / 건강상의 이유로 불참                                         |
+
+<br><br>
+
+# 프로젝트 구조 (toggle로 가릴 수 있게)
+
+<details>
+<summary>프로젝트 구조</summary>
+<div markdown="1">
+
+프로젝트 구조
+
+</div>
+</details>
+
+<br>
+
+| 구분        | 설명                                          |
+| ----------- | --------------------------------------------- |
+| /api        | api 호출 함수를 모아둔 폴더                   |
+| /page       | 페이지 단위의 컴포넌트 관리                   |
+| /components | 여러 페이지에서 동시에 사용되는 컴포넌트 관리 |
+| /router     | 라우팅 처리를 담당                            |
+| /utils      | 전역 상태, 전역 함수를 관리                   |
+| /styles     | 전역 스타일을 관리                            |
+
+<br><br>
+
+# 와이어프레임 (선택항목, 피그마를 제작한 팀도 있음)
+
+- 와이어프레임 링크
+
+<br><br>
+
+# 라우팅 (기능별)
+
+- 사용자 기능
+  - /main: 메인화면
+
+<br>
+
+- 관리자 기능
+  - /main: 메인화면
+
+<br><br>
+
+# 더미 데이터 표시 (선택사항, 경로와 내용)
 
 ```json
-{
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
-}
+
+더미데이터 표시
+
 ```
 
-eslint, prettier룰 변경은 팀원간 상호 합의가 필요합니다.
+<br><br>
+
+# 과제 요건 및 구현 방법
+
+## 1. 메인페이지 (/main)
+
+- 요구사항
+- 개선해야 할 점
+- 구현한 점
+
+<br>
+
+## 2. 관리자 기능 (/admin/register)
+
+- 요구사항
+- 개선해야 할 점
+- 구현한 점
+
+<br><br>
+
+# 컨벤션 링크 (1팀 참고)
+
+[참고](https://instinctive-moustache-aba.notion.site/WPO-FE-6-1-Coding-Convention-6a0123a0196343ea88c8434a3c157812#d00f53fad5c545a4b1e2aba7f6c62f31)
