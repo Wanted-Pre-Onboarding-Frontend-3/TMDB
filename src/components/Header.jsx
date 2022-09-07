@@ -6,6 +6,9 @@ import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
 
 const Header = () => {
+
+  // TODO: 메뉴 링크 경로 확인, 검색기능 구현
+
   const [searchKeyword, setSearchKeyword] = useState('');
   const pathName = window.location.pathname;
 
@@ -16,16 +19,16 @@ const Header = () => {
   return (
     <Container>
       <Navigation>
-        <Menu>
+        <LogoWrapper>
           <Link to="/">
-            <TextLogo>
+            <Logo>
               <span>TMDB</span>
-            </TextLogo>
+            </Logo>
           </Link>
-        </Menu>
+        </LogoWrapper>
 
         <Menu>
-          <Link to="/now-playing">
+          <Link to="/now_playing">
             <MenuButton>Now Playing</MenuButton>
           </Link>
 
@@ -59,17 +62,18 @@ const Header = () => {
 };
 
 const Container = styled.header`
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
   height: 70px;
-  margin: 0 auto;
   padding: 0 1rem;
   background-color: ${colors.black};
+  border-bottom: 1px solid ${colors.main};
   text-align: center;
   z-index: 5;
   transition: background-color 200ms ease 0s;
+  margin-bottom: 60px;
 `;
 
 const Navigation = styled.nav`
@@ -79,9 +83,14 @@ const Navigation = styled.nav`
   align-items: center;
 `;
 
-const TextLogo = styled.h1`
+const LogoWrapper = styled.span`
+  margin: 0 2em;
+`;
+
+const Logo = styled.h1`
   ${fonts.H1};
   padding: 0 0.4em;
+
   span {
     color: ${colors.main};
   }
@@ -95,7 +104,12 @@ const Menu = styled.span`
   height: 70px;
 
   a {
-    margin-right: 1em;
+    border-radius: 4px;
+    padding: 0 1em;
+
+    &:hover {
+      background-color: ${colors.sub_gray};
+    }
   }
 `;
 

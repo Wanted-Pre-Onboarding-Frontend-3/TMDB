@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { colors } from 'styles/colors';
 
 const Footer = () => {
+  // TODO: 아이콘 넣기
+
   return (
     <Container>
       <Wrapper>
