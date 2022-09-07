@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { RecoilRoot } from 'recoil';
 import GlobalStyles from 'styles/globalStyles';
 
 import App from './App';
@@ -13,10 +12,8 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={true} />
-      <RecoilRoot>
-        <GlobalStyles />
-        <App />
-      </RecoilRoot>
+      <GlobalStyles />
+      <App />
     </QueryClientProvider>
   </React.StrictMode>,
 );

@@ -28,10 +28,6 @@ export default function Search() {
     },
   );
 
-  const handleImageError = (e) => {
-    e.target.src = require('assets/images/default_poster.png');
-  };
-
   useEffect(() => {
     if (inView) {
       fetchNextPage();

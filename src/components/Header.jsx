@@ -9,7 +9,6 @@ import { fonts } from 'styles/fonts';
 
 const Header = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [searchResult, setSearchResult] = useState([]);
   const [isShow, setIsShow] = useState(false);
 
   const navigate = useNavigate();
@@ -18,13 +17,11 @@ const Header = () => {
     if (!searchKeyword) setIsShow(false);
   }, [searchKeyword]);
 
-  const serachData = useQuery(
+  const { data: searchResult } = useQuery(
     ['search-movie', searchKeyword],
     () => searchAPI.searchAndGetMovies({ params: { query: searchKeyword } }),
     {
       enabled: !!searchKeyword,
-      suspense: true,
-      onSuccess: (data) => setSearchResult(data.results),
     },
   );
 

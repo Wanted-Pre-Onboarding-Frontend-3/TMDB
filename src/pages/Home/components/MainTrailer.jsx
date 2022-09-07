@@ -12,7 +12,6 @@ const MainTrailer = ({ idx }) => {
 
   const { data: videoData } = useQuery(
     ['get-video', id],
-
     () => movieAPI.getTrailerMovies({ movieId: id }),
     {
       suspense: true,
