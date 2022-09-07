@@ -6,7 +6,6 @@ import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
 
 const Header = () => {
-
   // TODO: 메뉴 링크 경로 확인, 검색기능 구현
 
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -28,7 +27,7 @@ const Header = () => {
         </LogoWrapper>
 
         <Menu>
-          <Link to="/now_playing">
+          <Link to="/now-playing">
             <MenuButton>Now Playing</MenuButton>
           </Link>
 

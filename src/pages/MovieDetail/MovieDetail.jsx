@@ -1,42 +1,44 @@
 import movieAPI from 'api/movieAPI';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import MovieDetailEtc from './components/MovieDetailEtc';
+import MovieDetailBody from './components/MovieDetailBody';
 import MovieDetailHeader from './components/MovieDetailHeader';
 
 const MovieDetail = () => {
-  const [movieData, setMovieData] = useState([]);
-  const params = useParams().movie_id;
+  const id = useParams().movie_id;
+  const {pathname} = useLocation();
 
-  const fetchMovieData = async () => {
-    const getMovieData = await movieAPI.getMovieById({
-      movie_id: params,
-      language: 'ko-KR',
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  const {
+    isLoading,
+    error,
+    data: movieData,
+  } = useQuery(['movie-detail'], () => {
+    return movieAPI.getMovieById({
+      movie_id: id,
+      params: { language: 'ko-KR' },
     });
-    return getMovieData;
-  };
-
-  const { isLoading, data } = useQuery("movie-detail", fetchMovieData, {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: data => {
-      console.log(data)
-      setMovieData(data);
-    }
-  });
+  }, {suspense: true, cacheTime: 1000,
+    staleTime: 1000});
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
+  if (error) {
+    alert('오류가 발생하였습니다.', error.message);
+  }
+
   return (
     <Container>
       <MovieDetailHeader movieData={movieData} />
-      <MovieDetailEtc movieData={movieData} />
+      <MovieDetailBody movieData={movieData} id={id} />
     </Container>
   );
 };
@@ -44,6 +46,11 @@ const MovieDetail = () => {
 export default MovieDetail;
 
 const Container = styled.div`
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
+  padding: 0 120px;
+
+  @media screen and (max-width: 768px) {
+    padding: 0;
+  }
 `;

@@ -1,18 +1,16 @@
-
 import React from 'react';
-import ReactPlayer from "react-player";
-import { useQuery } from "react-query";
-import styled from "styled-components";
+import ReactPlayer from 'react-player';
+import { useQuery } from 'react-query';
+import styled from 'styled-components';
 
-import movieAPI from "../../../api/movieAPI";
-import { makeTrailerPath } from "../../../utils/PathUtil";
-
+import movieAPI from '../../../api/movieAPI';
+import { makeTrailerPath } from '../../../utils/PathUtil';
 
 const TopMainVideo = (props) => {
-  const {id} = props;
+  const { id } = props;
 
-  const {data: videoData} = useQuery(['get-video'], () => {
-    return movieAPI.getTrailerMovies({movieId: id})
+  const { data: videoData } = useQuery(['get-video'], () => {
+    return movieAPI.getTrailerMovies({ movieId: id });
   });
 
   return (

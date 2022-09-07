@@ -10,7 +10,8 @@ export default AdultTag;
 
 const TagContainer = styled.span`
   background-color: #fff;
-  padding: 1px 10px;
+  padding: 0.1rem 0.8rem;
   color: ${colors.gray1};
-  border-radius: 5px;
+  border-radius: 0.4rem;
+  margin-right: 0.8rem;
 `;
