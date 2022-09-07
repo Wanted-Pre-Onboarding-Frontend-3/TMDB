@@ -1,22 +1,36 @@
 import { AiFillStar } from 'react-icons/ai';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
 
 const MovieChart = ({ data }) => {
-  const IMAGE_BASEURL = 'https://image.tmdb.org/t/p/original';
+  const navigation = useNavigate();
+
+  const handleImageError = (e) => {
+    e.target.src = require('assets/images/default_poster.png');
+  };
 
   return (
     <>
       {data?.map((data, index) => (
-        <TableRow key={data?.id}>
+        <TableRow
+          key={data?.id}
+          onClick={() => {
+            navigation(`/movie/${data?.id}`);
+          }}
+        >
           <td>
             <Rank>{index + 1}</Rank>
           </td>
           <td>
             <article>
               <Image>
-                <img src={IMAGE_BASEURL + data?.poster_path} alt="poster" />
+                <img
+                  src={process.env.REACT_APP_IMAGE_URL + data?.poster_path}
+                  alt="poster"
+                  onError={handleImageError}
+                />
               </Image>
               <Text>
                 <MovieTitle>
@@ -33,7 +47,7 @@ const MovieChart = ({ data }) => {
           <td>
             <Star>
               <AiFillStar color={colors.main} />
-              {data?.vote_average}
+              {data?.vote_average.toFixed(1)}
             </Star>
           </td>
         </TableRow>
@@ -44,6 +58,12 @@ const MovieChart = ({ data }) => {
 
 const TableRow = styled.tr`
   border: 2px solid ${colors.white};
+  :hover {
+    opacity: 0.5;
+    transition: 0.5s;
+    cursor: pointer;
+  }
+
   &:nth-child(odd) {
     background-color: #f6f6f5;
   }
