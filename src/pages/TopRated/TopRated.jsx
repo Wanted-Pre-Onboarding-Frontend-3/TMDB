@@ -1,56 +1,92 @@
 import movieAPI from 'api/movieAPI';
-import { useEffect, useState } from 'react';
+import { Loading } from 'components/Loading';
+import _ from 'lodash';
+import { useEffect } from 'react';
+// import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery } from 'react-query';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { fonts } from 'styles/fonts';
+import { useInView } from 'utils/useInView';
 
 import MovieChart from './components/MovieChart';
 
 function TopRated() {
-  const [topRatedMovies, setTopRatedMovies] = useState();
+  const { ref, inView } = useInView();
 
-  const fetchData = async () => {
+  const fetchData = async ({ pageParam = 1 }) => {
     const getTopRated = await movieAPI.getTopRatedMovies({
-      params: { language: 'ko-KR' },
+      params: { language: 'ko-KR', page: pageParam },
     });
-    setTopRatedMovies(getTopRated.results);
     return getTopRated;
   };
 
+  const { isLoading, data, fetchNextpage } = useInfiniteQuery(
+    ['projects'],
+    fetchData,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        return lastPage.page + 1;
+      },
+    },
+  );
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (inView) {
+      fetchNextpage();
+    }
+  }, [inView]);
+
+  if (isLoading) {
+    return <div>test</div>;
+  }
+
+  const flattenMovie = _.flatten(data?.pages.map((item) => item.results));
+
+  console.log('inView', inView);
 
   return (
-    <Wrapper>
-      <Content>
-        <Title>
-          <SubText>WantedMDb Charts</SubText>
-          <MainText>Movie Top 20</MainText>
-        </Title>
-        <MovieList>
-          <Table>
-            <TableHead>
-              <tr>
-                <th>순위</th>
-                <th>영화제목</th>
-                <th>개봉일</th>
-                <th>별점</th>
-              </tr>
-            </TableHead>
-            <TableBody>
-              <MovieChart data={topRatedMovies} />
-            </TableBody>
-          </Table>
-        </MovieList>
-      </Content>
-    </Wrapper>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Wrapper>
+          <Content>
+            <Title>
+              <SubText>WantedMDb Charts</SubText>
+              <MainText>Movie Top 20</MainText>
+            </Title>
+            <MovieList>
+              <Table>
+                <TableHead>
+                  <tr>
+                    <th>순위</th>
+                    <th>영화제목</th>
+                    <th>개봉일</th>
+                    <th>별점</th>
+                  </tr>
+                </TableHead>
+                <TableBody>
+                  <MovieChart data={flattenMovie} />
+                </TableBody>
+              </Table>
+            </MovieList>
+            <div ref={ref} style={{ height: '200px' }}>
+              {!isLoading && <Loading />}
+            </div>
+          </Content>
+        </Wrapper>
+      )}
+    </>
   );
 }
 
 const Wrapper = styled.main`
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px 0;
   background-color: ${colors.black};
 `;
 const Content = styled.section`
