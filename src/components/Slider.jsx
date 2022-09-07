@@ -1,7 +1,4 @@
-import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
-import ReactSlick, { Settings } from 'react-slick';
-import styled from 'styled-components';
-import { colors } from 'styles/colors';
+import ReactSlick from 'react-slick';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
