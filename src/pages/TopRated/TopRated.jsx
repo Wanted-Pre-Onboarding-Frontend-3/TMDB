@@ -10,10 +10,7 @@ function TopRated() {
   const IMAGE_BASEURL = 'https://image.tmdb.org/t/p/original';
 
   const fetchData = async () => {
-    const getTopRated = await movieAPI.getTopRatedMovies({
-      language: 'ko',
-      page: 1,
-    });
+    const getTopRated = await movieAPI.getTopRatedMovies({});
     setTopRatedMovies(getTopRated.results);
     return getTopRated;
   };
@@ -21,8 +18,6 @@ function TopRated() {
   useEffect(() => {
     fetchData();
   }, []);
-
-  console.log(topRatedMovies);
 
   return (
     <Wrapper>
