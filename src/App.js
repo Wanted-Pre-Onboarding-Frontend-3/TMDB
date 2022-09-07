@@ -1,5 +1,5 @@
 import Layout from 'components/Layout';
-import Home from 'pages/Home';
+import Home from 'pages/home';
 import MovieDetail from 'pages/MovieDetail/MovieDetail';
 import Search from 'pages/search';
 import TopRated from 'pages/TopRated/TopRated';
@@ -13,14 +13,13 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/movie/:movie_id" element={<MovieDetail />} />
-            <Route path="/upcoming" element={<Upcoming />} />
-            <Route path="/top_rated" element={<TopRated />} />
-          </Route>
+
+        <Routes element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/movie/:movie_id" element={<MovieDetail />} />
+          <Route path="/upcoming" element={<Upcoming />} />
+          <Route path="/top_rated" element={<TopRated />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
