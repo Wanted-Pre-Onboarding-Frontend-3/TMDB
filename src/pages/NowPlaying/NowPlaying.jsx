@@ -1,39 +1,35 @@
 import _ from 'lodash';
-import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery } from "react-query";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery } from 'react-query';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-import movieAPI from "../../api/movieAPI";
-import { Loading } from "../../components/Loading";
-import { makeImagePath } from "../../utils/PathUtil";
-import TopMainVideo from "./component/TopMainVideo";
+import movieAPI from '../../api/movieAPI';
+import { Loading } from '../../components/Loading';
+import { makeImagePath } from '../../utils/PathUtil';
+import TopMainVideo from './component/TopMainVideo';
 
 export const NowPlaying = () => {
-  const {ref, inView} = useInView();
+  const { ref, inView } = useInView();
   const [firstMovieId, setFirstMovieId] = useState();
 
-  const fetchUsers = async ({pageParam = 1}) => {
+  const fetchUsers = async ({ pageParam = 1 }) => {
     const getNowPlaying = await movieAPI.getNowPlayingMovies({
-      page: pageParam
+      page: pageParam,
     });
     setFirstMovieId(getNowPlaying.results[0].id);
     return getNowPlaying;
   };
 
-  const {
-    isLoading,
-    data,
-    fetchNextPage,
-  } = useInfiniteQuery(
+  const { isLoading, data, fetchNextPage } = useInfiniteQuery(
     ['projects'],
     fetchUsers,
     {
       getNextPageParam: (lastPage, pages) => {
         return lastPage.page + 1;
-      }
-    }
+      },
+    },
   );
 
   useEffect(() => {
@@ -46,47 +42,43 @@ export const NowPlaying = () => {
     return <div>test</div>;
   }
 
-  const flattenMovie = _.flatten(data.pages.map(item => item.results))
+  const flattenMovie = _.flatten(data.pages.map((item) => item.results));
 
   return (
     <>
       {isLoading ? (
-        <Loading/>
+        <Loading />
       ) : (
         <RootWrap>
-          <TopMainVideo id={firstMovieId}/>
+          <TopMainVideo id={firstMovieId} />
           <TopInfoContainer>
             <TopInfoWrap>
-            <SpaceWrap></SpaceWrap>
-            <PosterWrap>포스터</PosterWrap>
-            <TitleWrap>영화제목</TitleWrap>
-            <ReleaseDateWrap>개봉일</ReleaseDateWrap>
-            <RateWrap>평점</RateWrap>
+              <SpaceWrap></SpaceWrap>
+              <PosterWrap>포스터</PosterWrap>
+              <TitleWrap>영화제목</TitleWrap>
+              <ReleaseDateWrap>개봉일</ReleaseDateWrap>
+              <RateWrap>평점</RateWrap>
             </TopInfoWrap>
           </TopInfoContainer>
           <NowPlayingListWrap>
             {flattenMovie?.map((nowPlaying, index) => {
               return (
                 <DivWrap key={index}>
-                  <IndexWrap>
-                    {index + 1}
-                  </IndexWrap>
+                  <IndexWrap>{index + 1}</IndexWrap>
                   <LinkWrap to={`/`}>
-                    <ImageWrap bgimg={makeImagePath(nowPlaying.poster_path)}/>
+                    <ImageWrap bgimg={makeImagePath(nowPlaying.poster_path)} />
                   </LinkWrap>
                   <DetailBox>
                     <TitleBox>{nowPlaying.title}</TitleBox>
-                    <Date>
-                      {nowPlaying.release_date}
-                    </Date>
+                    <Date>{nowPlaying.release_date}</Date>
                     <AverageWrap>⭐{nowPlaying.vote_average}</AverageWrap>
                   </DetailBox>
                 </DivWrap>
               );
             })}
           </NowPlayingListWrap>
-          <div ref={ref} style={{height: '100px'}}>
-            {!isLoading && <Loading/>}
+          <div ref={ref} style={{ height: '100px' }}>
+            {!isLoading && <Loading />}
           </div>
         </RootWrap>
       )}
@@ -101,12 +93,11 @@ const TopInfoContainer = styled.div`
   max-width: 1200px;
   margin: 24px auto;
   padding: 0 20px;
-  
 `;
 const TopInfoWrap = styled.div`
   padding: 0 12px;
   display: flex;
-`
+`;
 
 const TitleWrap = styled.div`
   display: flex;

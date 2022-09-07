@@ -44,8 +44,7 @@ const Card = ({ movieUrl, posterSrc, title, year, vote }) => {
   );
 };
 
-const StyledLink = styled(Link)`
-`;
+const StyledLink = styled(Link)``;
 
 const MovieImgWrapper = styled.div`
   width: 200px;
@@ -55,7 +54,6 @@ const MovieImgWrapper = styled.div`
   transition: 0.5s ease-out;
   border-radius: 5px;
 
- 
   &:hover {
     transform: scale(1.1);
     transition: 0.5s ease-out;
