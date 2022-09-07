@@ -1,18 +1,21 @@
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+import Spinner from 'components/Spinner';
+import React, { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Footer from './Footer';
-import Header from './Header';
-
-const Layout = () => {
+function Layout() {
   return (
     <Container>
       <Header />
-      <Outlet />
+      <Suspense fallback={<Spinner />}>
+        <Outlet />
+      </Suspense>
       <Footer />
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   display: flex;
