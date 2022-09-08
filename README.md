@@ -336,9 +336,9 @@
 ## 6. 검색페이지 (/search/:searchKeyword)
 
 - 구현한 점
-
+    - react-qeury의 useInfiniteQuery를 활용해 infinite scroll을 구현하였습니다.
 - 개선해야 할 점
-
+    - javascript api인 intersectino-observer를 통해 마지막 엘리먼트가 view 영역에 잡히면 다음페이지를 불러오지만, 간헐적으로 중복요청이 발생해 개선이 필요합니다.
 <br>
 
 ## 캐싱과 react-query
